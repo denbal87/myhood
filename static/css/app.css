@@ -1,0 +1,91 @@
+#base{
+	overflow: hidden;
+	background-image: url("../01.jpg");
+	background-size:   cover;                      /* <------ */
+    background-repeat: no-repeat;
+    background-position: center center;
+	
+}	
+
+#home{
+	background-image: url("../image.jpg");
+	background-size:   cover;                      /* <------ */
+    background-repeat: repeat-y;
+    background-position: center center; 
+	/*border: 100px solid white;
+	border-top-width:medium;
+	border-left-width: 250px;
+	border-right-width: 250px;
+	border-bottom-width: medium;*/
+}	
+
+
+#main_panel{
+	opacity: 0.97;
+	height: 620px;	
+	width: 800px;
+	overflow-y: scroll;
+
+}	
+
+
+#pic img {
+	position:absolute; z-index: -1;
+}
+	
+#pic_txt, #pic_txt2 {
+	color:white;
+	font-family: Century Gothic, sans-serif;
+	font-size: 50px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 26.3999996185303px;
+}
+
+#myModal{	
+	width: 850px;
+}	
+
+#feeds, #bar{
+	background-color: black;
+	/*height:120px;*/
+	
+}
+
+#home_bttn{
+	background-color: purple;
+}	
+
+#search_bar{
+	background-color: black;
+}	
+
+#bttn2, #bttn1{
+	background-color: black;
+	font-size: 15px;
+	
+}
+
+#search_bttn{
+	background-color: purple;
+}	
+	
+	
+#row1{
+	background-color: purple;
+}	
+
+#feeds{
+	color: white;
+	font-size: 15px;
+}	
+h3{
+	color:white;
+}	
+
+
+#title{
+	color: black;
+	font-family: Century Gothic, sans-serif;
+}	

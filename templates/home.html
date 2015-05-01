@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" >
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+
+  <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+</head>
+<body id="home">
+
+<div class="row" >
+  <div class="large-12 column">
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<center><h1 id="pic_txt">My Hood</h1>
+	<br>
+	<center><h1 id="pic_txt2">New App</h1>
+	<br>
+	<br>
+	<button href="#" id="home_bttn" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown">Select Your Home Neighborhood</button><br>
+	<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
+	  <li><a href="#">Manhattan</a></li>
+	  <li><a href="#">Bronx</a></li>
+	  <li><a href="#">Queens</a></li>
+	  <li><a href="#">Brooklyn</a></li>
+	  <li><a href="#">Staten Island</a></li>
+	</ul>
+	
+ </div> 
+</div>
+  
+  {% block body %}{% endblock %}
+  
+  <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>

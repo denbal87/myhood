@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+<!-- whats_good.html -->
+{% block title %}My Hood {% endblock %}
+
+{% block body %}
+	
+	<ul>
+        {% for post in s: %}
+            <li>
+                <td> {{ post.date.strftime('%Y-%m-%d %H:%M:%S') }} </td>
+				<br>
+                <td> {{ post.text }} {{post.nh}} </td>
+				<br>
+				<br>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
