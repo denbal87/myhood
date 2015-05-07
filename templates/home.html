@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
-<html class="no-js" lang="en" >
+<html class="no-js" lang="en" id="page" >
 
 <head>
   <meta charset="utf-8">
@@ -12,10 +12,44 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 
   <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
-</head>
-<body id="home">
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
-<div class="row" >
+	<script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
+  
+  
+</head>
+</head>
+
+
+<body id="home">
+<p id="demo"></p>
+<script>
+
+	
+function getLocation(){	
+	if("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(transferFile);
+	}
+}	
+
+function transferFile(position){
+	var start = 'lat=';
+	var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
+	$.get(
+		url="phony",
+		data= result, 
+		success=function(data) {
+			$('#my_hood').replaceWith(data);
+		}
+	);	
+}
+
+getLocation();
+
+</script>	   
+
+<div class="row" id="my_hood" >
   <div class="large-12 column">
 	<br>
 	<br>

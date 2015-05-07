@@ -1,0 +1,48 @@
+
+
+                open homepage
+					  |
+					  |
+			choose whether to share location
+					/          \
+				   yes		   no
+					|			 \
+		load this nh's q/a		load highlights from diff neighborhoods
+	(what about categories?) 	 OR load "pick a neighborhood page"
+	
+	Have generic map so can click on a nh and it will show on map
+	
+	
+	IMPORTANT:
+	new design: use mostly zipcodes due to lack of neighborhood database.
+	in case zipcodes overlap in regards to neighborhoods, look up the 
+	neighborhood value in JSON.
+	
+	Need to decide what neighborhoods to include, i.e. whether to use
+	parent or children neighborhoods in certain cases.
+	
+	Neighborhoods:
+	10031, 30, 37, 39, 32, 33, 40, 34, 27, 26
+	Inwood
+	Wash. Heights
+	Hamilton Heights
+	Manhattanville
+	Morningside Heights
+	Harlem
+	East Harlem
+	
+	10025, 24, 23 
+	Upper West Side:
+		100 - 96: Park West Village
+	74 - 60: Lincoln Towers = Lincoln Square:
+		San Juan Hill
+	
+	
+	
+	
+	
+	
+	
+	database:
+	
+	id | post text | post neighborhood 

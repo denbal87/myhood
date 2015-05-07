@@ -31,6 +31,7 @@ db.create_all()
 def get_nh(zipcode):
 	zipcodes = { "Inwood" : ["10034"], 
 		("Washington Heights") : ["10040", "10033", "10032"],
+		("Hamilton Heights") : ["10039"],
 		("Harlem") : ["10027", "10026", "10030", "10037", "10039"],
 		("Morningside Heights") : ["10027"],
 		("East Harlem") : ["10035", "10029"],
@@ -59,8 +60,25 @@ def get_nh(zipcode):
 
 @app.route('/')
 def page():
-	return render_template('whats_good.html')	
+	return render_template('home.html')	
+
+@app.route('/phony')
+def phony():
+	query = request.query_string #args.get('theString')
+	url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?" + query
+	location_dict = requests.get(url).json()
+	zip = location_dict["address"]["postcode"]
 	
+	hood_tuple = get_nh(zip) #need to know how many items in tuple
+	
+	#determinine number of itemps in hood_tuple 
+	#if number_items > 1
+	#	look up "neighbourhood" to pass to the page template
+	#else
+	#	pass hood_tuple
+	
+	return render_template("phony.html", location_data = location_dict)
+		
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -77,7 +95,7 @@ def post_wg():
 	
 		#get zipcode from client's IP
 		client_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-		url = "http://ip-api.com/json/" + client_ip
+		url = "http://ip-api.com/json/" + "129.236.235.231"
 		location_dict = requests.get(url).json()
 		zip = location_dict["zip"]
 		
