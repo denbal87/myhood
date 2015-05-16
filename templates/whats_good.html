@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base1.html" %}
 <!-- whats_good.html -->
 {% block title %}My Hood {% endblock %}
 
@@ -6,13 +6,15 @@
 	
 	<ul>
         {% for post in s: %}
-            <li>
-                <td> {{ post.date.strftime('%Y-%m-%d %H:%M:%S') }} </td>
-				<br>
-                <td> {{ post.text }} {{post.nh}} </td>
-				<br>
-				<br>
-            </li>
+			{% if post.nh == hood %}
+				<li>
+					<td> {{ post.date.strftime('%Y-%m-%d %H:%M:%S') }} </td>
+					<br>
+					<td> {{ post.text }} {{post.nh}} </td>
+					<br>
+					<br>
+				</li>
+			{% endif %}	
         {% endfor %}
     </ul>
 
