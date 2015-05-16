@@ -79,7 +79,10 @@ def phony():
 	
 	return render_template("phony.html", location_data = location_dict)
 		
-
+#@app.route('/food/<nh>')
+#def food(nh):
+	
+		
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == "POST":
@@ -89,26 +92,14 @@ def search():
     else: # request.method == "GET"
         return render_template("search.html")
 		
-@app.route("/post_wg", methods=["GET", "POST"])
-def post_wg():
+@app.route("/post_wg/<nh>", methods=["GET", "POST"])
+def post_wg(nh):
     if request.method == "POST":
-	
-		#get zipcode from client's IP
-		client_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-		url = "http://ip-api.com/json/" + "129.236.235.231"
-		location_dict = requests.get(url).json()
-		zip = location_dict["zip"]
-		
-		hood_tuple = get_nh(zip) #need to know how many items in tuple
-		
-		#if len(hood_tuple) > 1:
-			
-		
-		post = Post(request.form["user_input"], hood_tuple)
+		post = Post(request.form["user_input"], nh)
 		db.session.add(post)
 		db.session.commit()
 
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), nh_tuple = hood_tuple)
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), hood = nh)
     else:
     	return render_template("search.html")
 
