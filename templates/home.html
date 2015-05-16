@@ -14,10 +14,10 @@
   <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
-	<script type=text/javascript src="{{
+  <script type=text/javascript src="{{
   url_for('static', filename='jquery.js') }}"></script>
-  
-  
+
+
 </head>
 </head>
 
@@ -26,63 +26,33 @@
 <p id="demo"></p>
 <script>
 
-	
-function getLocation(){	
-	if("geolocation" in navigator) {
-		navigator.geolocation.getCurrentPosition(transferFile);
-	}
-}	
+navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                var start = 'lat=';
+                var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
+                $.get(
+                url="phony",
+                data= result,
+                success=function(data) {
+                        $('#my_hood').replaceWith(data);
+                }
+        );
+                    },
+                    function(error){
+                        alert("Error!");
+                    }
+            );
 
-function transferFile(position){
-	var start = 'lat=';
-	var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
-	$.get(
-		url="phony",
-		data= result, 
-		success=function(data) {
-			$('#my_hood').replaceWith(data);
-		}
-	);	
-}
-
-getLocation();
-
-</script>	   
+</script>
 
 <div class="row" id="my_hood" >
   <div class="large-12 column">
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<center><h1 id="pic_txt">My Hood</h1>
-	<br>
-	<center><h1 id="pic_txt2">New App</h1>
-	<br>
-	<br>
-	<button href="#" id="home_bttn" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown">Select Your Home Neighborhood</button><br>
-	<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-	  <li><a href="#">Manhattan</a></li>
-	  <li><a href="#">Bronx</a></li>
-	  <li><a href="#">Queens</a></li>
-	  <li><a href="#">Brooklyn</a></li>
-	  <li><a href="#">Staten Island</a></li>
-	</ul>
-	
- </div> 
-</div>
-  
-  {% block body %}{% endblock %}
-  
-  <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
-  <script>
-    $(document).foundation();
-  </script>
-</body>
-</html>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+-- INSERT --                                                                                                                                                                  1,15          Top
