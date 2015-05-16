@@ -14,7 +14,7 @@
   <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
-	<script type=text/javascript src="{{
+  <script type=text/javascript src="{{
   url_for('static', filename='jquery.js') }}"></script>
   
   
@@ -26,30 +26,22 @@
 <p id="demo"></p>
 <script>
 
-	
-function getLocation(){	
-	if("geolocation" in navigator) {
-		navigator.geolocation.getCurrentPosition(transferFile);
-	}
-}	
-
-function transferFile(position){
-	var start = 'lat=';
-	var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
-	$.post('phony', result, success=function(data) {
-			$('#my_hood').replaceWith(data);
-		});
-
-	/*$.get(
+navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                var start = 'lat=';
+		var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
+		$.get(
 		url="phony",
 		data= result, 
 		success=function(data) {
 			$('#my_hood').replaceWith(data);
 		}
-	);*/	
-}
-
-getLocation();
+	);	
+                    },
+                    function(error){
+                        alert("Error!");
+                    }
+            );
 
 </script>	   
 
@@ -69,13 +61,13 @@ getLocation();
 	<center><h1 id="pic_txt2">New App</h1>
 	<br>
 	<br>
-	<button href="#" id="home_bttn" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown">Select Your Home Neighborhood</button><br>
+	<button href="#" id="home_bttn" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown">This button will one day have a purpose!</button><br>
 	<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-	  <li><a href="#">Manhattan</a></li>
-	  <li><a href="#">Bronx</a></li>
-	  <li><a href="#">Queens</a></li>
-	  <li><a href="#">Brooklyn</a></li>
-	  <li><a href="#">Staten Island</a></li>
+	  <li><a href="#">One</a></li>
+	  <li><a href="#">Two</a></li>
+	  <li><a href="#">Three</a></li>
+	  <li><a href="#">Four</a></li>
+	  <li><a href="#">Five</a></li>
 	</ul>
 	
  </div> 
