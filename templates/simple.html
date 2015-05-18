@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple Page</title>
+	<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+
+</head>
+
+<body>
+	<h1 id="heading">Heres something!</h1>
+
+
+	<script>
+		$.get(
+		url="test",
+		data= "unmodified", 
+		success=function(data) {
+			$('#heading').replaceWith(data);
+			alert("hmm...");
+		}
+		);	
+		        
+
+			
+
+
+
+		
+	</script>
+</body>
+</html>

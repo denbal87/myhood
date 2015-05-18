@@ -21,90 +21,84 @@
 </head>
 <body id="base">
 
-
-<nav id="bar" class="top-bar" data-topbar role="navigation">
-  
+<nav class="top-bar" data-topbar role="navigation">
   <ul class="title-area">
+    <li class="name">
+      <h1><a href="#">My Hood</a></h1>
+    </li>
      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
     <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
   </ul>
-  
-
 
   <section class="top-bar-section">
     <!-- Right Nav Section -->
-    <ul class="left">
-      <li class="has-dropdown">
-        <a id="feeds" href="#">Feeds</a>
-        <ul class="dropdown">
-          <li><a href="#">What's good?</a></li>
-          <li><a href="#">Where's that place?</a></li>
-		  <li><a href="#">Another topic</a></li>
-        </ul>
-	</section>	
-	  
-	<section class="top-bar-section">
-    <!-- Right Nav Section -->
-    <ul class="left">
-      <li class="has-dropdown">
+    <ul class="right">
+		<li class="has-dropdown">
+			<a id="feeds" href="#">Feeds</a>
+			<ul class="dropdown">
+			  <li><a href="#">What's good?</a></li>
+			  <li><a href="#">Where's that place?</a></li>
+			  <li><a href="#">Food</a></li>
+			  <li><a href="#">Clothes</a></li>
+			</ul>
+		</li>
+		
+		  <li class="has-dropdown">
         <a id="feeds" href="#">Ask</a>
         <ul class="dropdown">
-          <li><a href="#" data-reveal-id="myModal">What's good?</a></li>
-			
-			<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-			<h2 id="modalTitle">Post to What's Good</h2>
-			<form action="/post_wg/{{ hood }}" method="post">	
-				<div class="row">
-					<div class="large-12 columns">
-						<textarea placeholder="Type stuff here" name="user_input" required></textarea>
+			<li><a href="#" data-reveal-id="myModal">What's good?</a></li>
+				
+				<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+				<h2 id="modalTitle">Post to What's Good</h2>
+				<form action="/post_wg/{{ hood }}" method="post">	
+					<div class="row">
+						<div class="large-12 columns">
+							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
+						</div>
+						<div class="right">
+							<button type="submit">Post</button>
+						</div>	
 					</div>
-					<div class="right">
-						<button type="submit">Post</button>
-					</div>	
+				</form>	
+				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 				</div>
-			</form>	
-			<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-			</div>
-          
-		  
-		  <li><a href="#">Where's that place?</a></li>
-		  <li><a href="#">Another topic</a></li>
-        </ul>
-	</section>	 
-	
-	<section class="top-bar-section">
-    <!-- Right Nav Section -->
-    <ul class="left">
-      <li class="has-dropdown">
-        <a id="feeds" href="#">Answer</a>
-        <ul class="dropdown">
-          <li><a href="#">What's good?</a></li>
-          <li><a href="#">Where's that place?</a></li>
-		  <li><a href="#">Another topic</a></li>
-        </ul>
-	</section>	
-	
-	<section class="top-bar-section">
-    <!-- Right Nav Section -->
-    <ul class="left">
-      <li class="has-dropdown">
+				
+			  
+			  
+			  <li><a href="#">Where's that place?</a></li>
+			  <li><a href="#">Another topic</a></li>
+			</ul>
+		</li>
+		
+		<li class="has-dropdown">
+			<a id="feeds" href="#">Answer</a>
+			<ul class="dropdown">
+			  <li><a href="#">What's good?</a></li>
+			  <li><a href="#">Where's that place?</a></li>
+			  <li><a href="#">Another topic</a></li>
+			</ul>
+		</li>	
+		<li class="has-dropdown">
         <a id="feeds" href="#">Change Neighborhood</a>
         <ul class="dropdown">
-          <li class="has-dropdown">
+        <li class="has-dropdown">
 			<a id="feeds" href="#">Manhattan</a>
 			<ul class="dropdown">
 				<li><a href="#">Central Harlem</a></li>
 				<li><a href="#">East Harlem</a></li>
 				<li><a href="#">Washington Heights</a></li>
-			</ul>	
+			</ul>
+				
           <li><a href="#">Bronx</a></li>
 		  <li><a href="#">Brooklyn</a></li>
 		  <li><a href="#">Queens</a></li>
         </ul>
-	</section>	
+		</li>
 	
-	<section class="top-bar-section">
-	<ul class="right">
+	</ul>
+
+    <!-- Left Nav Section -->
+    <ul class="left">
 		<li class="has-form">
 		<div class="row collapse">
 		<div class="large-8 small-9 columns">
@@ -116,7 +110,9 @@
 		</div>
 		</li>
 	</ul>	
+  </section>
 </nav>
+
 
 <div>
 	<div class="row">

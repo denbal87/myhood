@@ -23,7 +23,7 @@
 #main_panel{
 	opacity: 0.97;
 	height: 620px;	
-	width: 800px;
+	width: 100%;
 	overflow-y: scroll;
 
 }	
@@ -43,9 +43,9 @@
 	line-height: 26.3999996185303px;
 }
 
-#myModal{	
+/*#myModal{	
 	width: 850px;
-}	
+}	*/
 
 #feeds, #bar{
 	background-color: black;

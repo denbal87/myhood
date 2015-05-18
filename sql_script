@@ -1,0 +1,11 @@
+ #!/bin/csh
+	
+	sudo apt-get install mysql-server
+	sudo apt-get install mysql-client
+	sudo apt-get install libmysqlclient15-dev
+	sudo apt-get install python-mysqldb
+	sudo wget http://peak.telecommunity.com/dist/ez_setup.py
+	sudo python ez_setup.py
+	sudo easy_install MySQL-Python
+	sudo easy_install SQLAlchemy
+	pip install Flask-SQLAlchemy		
