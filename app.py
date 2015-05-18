@@ -60,7 +60,43 @@ def get_nh(zipcode):
 
 @app.route('/')
 def page():
-	return render_template('home.html')	
+	return render_template('home.html')
+
+@app.route('/getgeo')
+def getgeo():
+	nh_file = open('nh_list.txt', 'w')
+	url_file = open('url.txt', 'w')
+	lat_file = open('latfile.txt', 'r')
+	long_file = open('longfile.txt', 'r')
+	lat = lat_file.readline().rstrip()
+	long = long_file.readline().rstrip()
+	while lat:
+		url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?lat=" + lat + "&lon=" + long + "&format=json"
+		url_file.write(url + "\n")
+		nh_dict = requests.get(url).json()
+		#nh_list.append(nh_dict["address"]["neighbourhood"]
+		try: nh_file.write(nh_dict["address"]["neighbourhood"] + "\n")
+		except KeyError: pass #nh_file.write(nh_dict["address"]["suburb"] + "\n")
+		lat = lat_file.readline().rstrip()
+		long = long_file.readline().rstrip()
+	return "Done!"	
+		
+@app.route('/nh_list')
+def nh_list():
+	nh_ready_file = open('neighborhoods.txt', 'w')
+	nh_file = open('nh_list.txt', 'r')
+	nh = nh_file.readline()
+	a_list = ["Harlem"]
+	while nh:
+		if nh not in a_list:
+			a_list.append(nh)
+			nh = nh_file.readline()
+		else:
+			nh = nh_file.readline()
+	for item in a_list:
+		nh_ready_file.write(item)
+	return "Ready!"	
+	
 
 @app.route('/phony')
 def phony():
