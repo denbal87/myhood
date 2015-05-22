@@ -18,11 +18,13 @@ class Post(db.Model):
     text = db.Column(db.String)
     date = db.Column(db.DateTime)
     nh = db.Column(db.String)
+    isAnswer = db.Column(db.Integer)	
 
-    def __init__(self, text, hood):
+    def __init__(self, text, hood, ans):
         self.text = text
         self.nh = hood
         self.date = datetime.now()
+	self.isAnswer = ans
 
 db.create_all()
 
@@ -117,6 +119,15 @@ def phony():
 		
 #@app.route('/food/<nh>')
 #def food(nh):
+
+
+#@app.route('/answer/<postID>/<anAnswer>/<nh>', methods=["GET", "POST"])
+#def answer(postID, anAnswer, nh):
+#	if request.method == "POST":
+		#search database for post with given postID
+		#add answer to the post's answer field
+		#return the template with posts and answers for given nh
+
 	
 		
 @app.route("/search", methods=["GET", "POST"])
@@ -131,7 +142,7 @@ def search():
 @app.route("/post_wg/<nh>", methods=["GET", "POST"])
 def post_wg(nh):
     if request.method == "POST":
-		post = Post(request.form["user_input"], nh)
+		post = Post(request.form["user_input"], nh, 0)
 		db.session.add(post)
 		db.session.commit()
 

@@ -12,6 +12,24 @@
 					<br>
 					<td> {{ post.text }} {{post.nh}} </td>
 					<br>
+
+					<a href="" data-reveal-id="reply_modal" class="button tiny">Answer</a>
+				
+						<div id="reply_modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+						<p>{{ post.text }}</p>
+						<form action='answer/{{post.id}}/<anAnswer>/{{hood}}' method="post">	
+						<div class="row">
+						<div class="large-12 columns">
+							<textarea placeholder="Write your answer here" name="user_input" required></textarea>
+						</div>
+						<div class="right">
+							<button type="submit">Submit</button>
+						</div>	
+						</div>
+						</form>	
+						<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+						</div>
+						
 					<br>
 				</li>
 			{% endif %}	

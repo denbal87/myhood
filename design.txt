@@ -45,4 +45,13 @@
 	
 	database:
 	
-	id | post text | post neighborhood 
+	id | post text | post neighborhood | answer (yes/no)
+
+
+	use module for home page nh selection if user choses to opt out for
+	location
+	
+	for posting an answer:
+		pass post text + answer text to the view function. then retrieve post text
+		and search database for a post with that text. then add asnwer to that post.
+	 

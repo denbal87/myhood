@@ -2,16 +2,17 @@
 	overflow: hidden;
 	background-image: url("../01.jpg");
 	background-size:   cover;                      /* <------ */
-    background-repeat: no-repeat;
-    background-position: center center;
+    	background-repeat: no-repeat;
+    	background-position: center center;
 	
 }	
 
 #home{
 	background-image: url("../image.jpg");
 	background-size:   cover;                      /* <------ */
-    background-repeat: repeat-y;
-    background-position: center center; 
+    	background-repeat: no-repeat;
+    	background-position: center center;
+	overflow: hidden; 
 	/*border: 100px solid white;
 	border-top-width:medium;
 	border-left-width: 250px;
