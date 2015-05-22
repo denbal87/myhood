@@ -3,8 +3,8 @@
 {% block title %}My Hood {% endblock %}
 
 {% block body %}
-	
 	<ul>
+		{% set n = 0 %}
         {% for post in s: %}
 			{% if post.nh == hood %}
 				<li>
@@ -12,16 +12,18 @@
 					<br>
 					<td> {{ post.text }} {{post.nh}} </td>
 					<br>
-					
+					{% set n_str = n|string %}
+					{% set anID = ["reply_modal", n_str] %}
+					{% set theID = anID|join %}	
 
-					<a href="" data-reveal-id="reply_modal" class="button tiny">Answer</a>
+					<a href="" data-reveal-id={{theID}} class="button tiny">Answer</a>
 				
-						<div id="reply_modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+						<div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 						<p>{{ post.text }}</p>
 						<form action='/{{post.id}}/{{hood}}' method="post">	
 						<div class="row">
 						<div class="large-12 columns">
-							<textarea placeholder="Write your answer here" name="user_input" required></textarea>
+							<textarea placeholder="Write your answer here"name="user_input" required></textarea>
 						</div>
 						<div class="right">
 							<button type="submit">Submit</button>
@@ -39,7 +41,7 @@
 						</div>
 					    </li>
 					{% endif %}
-
+					{% set n = n + 1 %}
 				</li>
 			{% endif %}	
         {% endfor %}

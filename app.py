@@ -132,13 +132,14 @@ def answer(postID, nh):
 	if request.method == "POST":
 		anAnswer = request.form["user_input"]
 		#search database for post with given postID
-		thePost = User.query.get(postID) #will this actually let me add answer to post
+		thePost = Post.query.get(postID) #will this actually let me add answer to post
 		#in database or to its copy?
 		
 		#add answer to the post's answer field
 		thePost.answer = anAnswer
+		db.session.commit()
 		#return the template with posts and answers for given nh
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), hood = nh)
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), hood = nh, post_copy = thePost)
 	
 		
 @app.route("/search", methods=["GET", "POST"])
