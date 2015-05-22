@@ -18,13 +18,15 @@ class Post(db.Model):
     text = db.Column(db.String)
     date = db.Column(db.DateTime)
     nh = db.Column(db.String)
-    isAnswer = db.Column(db.Integer)	
+    isAnswer = db.Column(db.Integer)
+    answer = db.Column(db.String)		
 
     def __init__(self, text, hood, ans):
         self.text = text
         self.nh = hood
         self.date = datetime.now()
 	self.isAnswer = ans
+	self.answer = 'none'
 
 db.create_all()
 
@@ -64,6 +66,7 @@ def get_nh(zipcode):
 def page():
 	return render_template('home.html')
 
+#get neighborhood list from lat and long values
 @app.route('/getgeo')
 def getgeo():
 	nh_file = open('nh_list.txt', 'w')
@@ -83,6 +86,9 @@ def getgeo():
 		long = long_file.readline().rstrip()
 	return "Done!"	
 		
+
+#take out all repeats from neighborhood list
+#to get a list of neighborhoods
 @app.route('/nh_list')
 def nh_list():
 	nh_ready_file = open('neighborhoods.txt', 'w')
@@ -121,13 +127,18 @@ def phony():
 #def food(nh):
 
 
-#@app.route('/answer/<postID>/<anAnswer>/<nh>', methods=["GET", "POST"])
-#def answer(postID, anAnswer, nh):
-#	if request.method == "POST":
+@app.route('/<postID>/<nh>', methods=["GET", "POST"])
+def answer(postID, nh):
+	if request.method == "POST":
+		anAnswer = request.form["user_input"]
 		#search database for post with given postID
+		thePost = User.query.get(postID) #will this actually let me add answer to post
+		#in database or to its copy?
+		
 		#add answer to the post's answer field
+		thePost.answer = anAnswer
 		#return the template with posts and answers for given nh
-
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), hood = nh)
 	
 		
 @app.route("/search", methods=["GET", "POST"])

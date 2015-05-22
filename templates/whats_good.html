@@ -12,12 +12,13 @@
 					<br>
 					<td> {{ post.text }} {{post.nh}} </td>
 					<br>
+					
 
 					<a href="" data-reveal-id="reply_modal" class="button tiny">Answer</a>
 				
 						<div id="reply_modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 						<p>{{ post.text }}</p>
-						<form action='answer/{{post.id}}/<anAnswer>/{{hood}}' method="post">	
+						<form action='/{{post.id}}/{{hood}}' method="post">	
 						<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Write your answer here" name="user_input" required></textarea>
@@ -31,6 +32,14 @@
 						</div>
 						
 					<br>
+					{% if post.answer != 'none' %}
+                                            <li>
+					        <div align="right">
+							<td> {{ post.answer }} </td>
+						</div>
+					    </li>
+					{% endif %}
+
 				</li>
 			{% endif %}	
         {% endfor %}
