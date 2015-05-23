@@ -13,6 +13,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
 
 db = SQLAlchemy(app)
 
+class Answer(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	postID = db.Column(db.Integer)
+	count = db.Column(db.Integer)
+	text = db.Column(db.String)
+	
+	def __init__(self, postID, count, text):
+		self.postID = postID
+		self.count = count
+		self.text = text
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String)
@@ -136,10 +147,11 @@ def answer(postID, nh):
 		#in database or to its copy?
 		
 		#add answer to the post's answer field
-		thePost.answer = anAnswer
+		theAnswer = Answer(postID, 0, anAnswer)
+		db.session.add(theAnswer)
 		db.session.commit()
 		#return the template with posts and answers for given nh
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), hood = nh, post_copy = thePost)
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh, post_copy = thePost)
 	
 		
 @app.route("/search", methods=["GET", "POST"])
@@ -158,7 +170,7 @@ def post_wg(nh):
 		db.session.add(post)
 		db.session.commit()
 
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), hood = nh)
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh)
     else:
     	return render_template("search.html")
 

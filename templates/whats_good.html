@@ -34,13 +34,11 @@
 						</div>
 						
 					<br>
-					{% if post.answer != 'none' %}
-                                            <li>
-					        <div align="right">
-							<td> {{ post.answer }} </td>
-						</div>
-					    </li>
-					{% endif %}
+					{% for answer in answers %}
+						{% if answer.postID == post.id %}
+							<p> {{ answer.text }} </p>
+						{% endif %}
+					{% endfor %}
 					{% set n = n + 1 %}
 				</li>
 			{% endif %}	
