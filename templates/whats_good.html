@@ -6,7 +6,7 @@
 	<ul>
 		{% set n = 0 %}
         {% for post in s: %}
-			{% if post.nh == hood %}
+			{% if post.nh == hood and post.tag == theTag %}
 				<li>
 					<td> {{ post.date.strftime('%Y-%m-%d %H:%M:%S') }} </td>
 					<br>
@@ -20,7 +20,7 @@
 				
 						<div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 						<p>{{ post.text }}</p>
-						<form action='/{{post.id}}/{{hood}}' method="post">	
+						<form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}' method="post">	
 						<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Write your answer here"name="user_input" required></textarea>

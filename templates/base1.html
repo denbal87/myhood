@@ -50,7 +50,7 @@
 				
 				<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				<h2 id="modalTitle">Post to What's Good</h2>
-				<form action="/post_wg/{{ hood }}" method="post">	
+				<form action="/post/{{ hood }}/whats_good" method="post">	
 					<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
@@ -65,8 +65,57 @@
 				
 			  
 			  
-			  <li><a href="#">Where's that place?</a></li>
-			  <li><a href="#">Another topic</a></li>
+			  <li><a href="#" data-reveal-id="myModal1">Where's that place?</a></li>
+			  
+				<div id="myModal1" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+				<h2 id="modalTitle">Post to Where's that place?</h2>
+				<form action="/post/{{ hood }}/where" method="post">	
+					<div class="row">
+						<div class="large-12 columns">
+							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
+						</div>
+						<div class="right">
+							<button type="submit">Post</button>
+						</div>	
+					</div>
+				</form>	
+				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+				</div>
+			  
+			  <li><a href="#" data-reveal-id="myModal2">Food</a></li>
+			  
+				<div id="myModal2" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+				<h2 id="modalTitle">Post to Food</h2>
+				<form action="/post/{{ hood }}/food" method="post">	
+					<div class="row">
+						<div class="large-12 columns">
+							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
+						</div>
+						<div class="right">
+							<button type="submit">Post</button>
+						</div>	
+					</div>
+				</form>	
+				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+				</div>
+			
+				<li><a href="#" data-reveal-id="myModal3">Clothes</a></li>
+				
+				<div id="myModal3" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+				<h2 id="modalTitle">Post to Clothes</h2>
+				<form action="/post/{{ hood }}/clothes" method="post">	
+					<div class="row">
+						<div class="large-12 columns">
+							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
+						</div>
+						<div class="right">
+							<button type="submit">Post</button>
+						</div>	
+					</div>
+				</form>	
+				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+				</div>
+				
 			</ul>
 		</li>
 		

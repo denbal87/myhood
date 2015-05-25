@@ -8,7 +8,7 @@ from sqlalchemy import desc
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myhood.db'
 
 
 db = SQLAlchemy(app)
@@ -29,15 +29,13 @@ class Post(db.Model):
     text = db.Column(db.String)
     date = db.Column(db.DateTime)
     nh = db.Column(db.String)
-    isAnswer = db.Column(db.Integer)
-    answer = db.Column(db.String)		
+    tag = db.Column(db.String)
 
-    def __init__(self, text, hood, ans):
+    def __init__(self, text, hood, aTag):
         self.text = text
         self.nh = hood
         self.date = datetime.now()
-	self.isAnswer = ans
-	self.answer = 'none'
+	self.tag = aTag
 
 db.create_all()
 
@@ -122,9 +120,9 @@ def phony():
 	query = request.query_string #args.get('theString')
 	url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?" + query
 	location_dict = requests.get(url).json()
-	zip = location_dict["address"]["postcode"]
+	#zip = location_dict["address"]["postcode"]
 	
-	hood_tuple = get_nh(zip) #need to know how many items in tuple
+	#hood_tuple = get_nh(zip) #need to know how many items in tuple
 	
 	#determinine number of itemps in hood_tuple 
 	#if number_items > 1
@@ -138,8 +136,8 @@ def phony():
 #def food(nh):
 
 
-@app.route('/<postID>/<nh>', methods=["GET", "POST"])
-def answer(postID, nh):
+@app.route('/answer/<postID>/<nh>/<tag>', methods=["GET", "POST"])
+def answer(postID, nh, tag):
 	if request.method == "POST":
 		anAnswer = request.form["user_input"]
 		#search database for post with given postID
@@ -151,8 +149,9 @@ def answer(postID, nh):
 		db.session.add(theAnswer)
 		db.session.commit()
 		#return the template with posts and answers for given nh
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh, post_copy = thePost)
-	
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh, post_copy = thePost, theTag = tag)
+	else:
+		return render_template("search.html")
 		
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -163,14 +162,14 @@ def search():
     else: # request.method == "GET"
         return render_template("search.html")
 		
-@app.route("/post_wg/<nh>", methods=["GET", "POST"])
-def post_wg(nh):
+@app.route("/post/<nh>/<tag>", methods=["GET", "POST"])
+def post(nh, tag):
     if request.method == "POST":
-		post = Post(request.form["user_input"], nh, 0)
+		post = Post(request.form["user_input"], nh, tag)
 		db.session.add(post)
 		db.session.commit()
 
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh)
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh, theTag = tag)
     else:
     	return render_template("search.html")
 
