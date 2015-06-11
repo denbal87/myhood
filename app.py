@@ -120,20 +120,11 @@ def phony():
 	query = request.query_string #args.get('theString')
 	url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?" + query
 	location_dict = requests.get(url).json()
-	#zip = location_dict["address"]["postcode"]
-	
-	#hood_tuple = get_nh(zip) #need to know how many items in tuple
-	
-	#determinine number of itemps in hood_tuple 
-	#if number_items > 1
-	#	look up "neighbourhood" to pass to the page template
-	#else
-	#	pass hood_tuple
-	
-	return render_template("phony.html", location_data = location_dict)
+	theHood = location_dict["address"]["neighbourhood"]
+	if theHood == "Washington Houses":
+		theHood = "Yorkville"
+	return render_template("phony.html", hood = theHood)
 		
-#@app.route('/food/<nh>')
-#def food(nh):
 
 
 @app.route('/answer/<postID>/<nh>/<tag>', methods=["GET", "POST"])

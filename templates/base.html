@@ -27,7 +27,7 @@
       <h1><a href="/">My Hood</a></h1>
     </li>
      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-    <li class="toggle-topbar menu-icon"><a href="#"><span>{{ location_data["address"]["neighbourhood"] }}</span></a></li>
+    <li class="toggle-topbar menu-icon"><a href="#"><span>{{ hood }}</span></a></li>
   </ul>
 
   <section class="top-bar-section">
@@ -50,7 +50,7 @@
 				
 				<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				<h2 id="modalTitle">Post to What's Good</h2>
-				<form action="/post/{{ location_data['address']['neighbourhood'] }}/whats_good" method="post">	
+				<form action="/post/{{ hood }}/whats_good" method="post">	
 					<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
@@ -69,7 +69,7 @@
 				
 				<div id="myModal1" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				<h2 id="modalTitle">Post to Where's that place?</h2>
-				<form action="/post/{{ location_data['address']['neighbourhood'] }}/where" method="post">	
+				<form action="/post/{{ hood }}/where" method="post">	
 					<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
@@ -86,7 +86,7 @@
 				
 				<div id="myModal2" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				<h2 id="modalTitle">Post to Food</h2>
-				<form action="/post/{{ location_data['address']['neighbourhood'] }}/food" method="post">	
+				<form action="/post/{{ hood }}/food" method="post">	
 					<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
@@ -103,7 +103,7 @@
 				
 				<div id="myModal3" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 				<h2 id="modalTitle">Post to Clothes</h2>
-				<form action="/post/{{ location_data['address']['neighbourhood'] }}/clothes" method="post">	
+				<form action="/post/{{ hood }}/clothes" method="post">	
 					<div class="row">
 						<div class="large-12 columns">
 							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
