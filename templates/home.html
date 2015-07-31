@@ -17,17 +17,10 @@
   <script type=text/javascript src="{{
   url_for('static', filename='jquery.js') }}"></script>
   
-  
-</head>
-</head>
-
-
-<body id="home">
-<p id="demo"></p>
-<script>
+  <script>
 
 navigator.geolocation.getCurrentPosition(
-                    function(position) {
+                function(position) {
                 var start = 'lat=';
                 var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
                 $.get(
@@ -45,6 +38,14 @@ navigator.geolocation.getCurrentPosition(
 
 
 </script>	   
+  
+  
+</head>
+
+
+<body id="home">
+<p id="demo"></p>
+
 
 <div class="row" id="my_hood" >
   <div class="large-12 column">

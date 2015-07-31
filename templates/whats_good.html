@@ -1,48 +1,118 @@
 {% extends "base1.html" %}
 <!-- whats_good.html -->
-{% block title %}My Hood {% endblock %}
+{% block title %}My Hood {% endblock %} {% block body %}
+<ul>
+    
+    {% set i = 0 %}	{% for post in s: %} {% if post.nh == hood and post.tag == theTag %}
+    <!-- delete if doesn't help -->
+    <div id="my-data" post-id="{{post.id}}" post-nh="{{post.nh}}"></div>
+    <!--______________________________ -->
+    <li>
+        <td> {{ post.text }} </td>
+        
+        
+        
 
-{% block body %}
-	<ul>
-		{% set n = 0 %}
-        {% for post in s: %}
-			{% if post.nh == hood and post.tag == theTag %}
-				<li>
-					<td> {{ post.date.strftime('%Y-%m-%d %H:%M:%S') }} </td>
-					<br>
-					<td> {{ post.text }} </td>
-					<br>
-					{% set n_str = n|string %}
-					{% set anID = ["reply_modal", n_str] %}
-					{% set theID = anID|join %}	
+        <br>
+        <br>
+        <br>
+        <br> 
 
-					<a href="" data-reveal-id={{theID}} class="button tiny">Answer</a>
-				
-						<div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-						<p>{{ post.text }}</p>
-						<form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}' method="post">	
-						<div class="row">
-						<div class="large-12 columns">
-							<textarea placeholder="Write your answer here"name="user_input" required></textarea>
-						</div>
-						<div class="right">
-							<button type="submit">Submit</button>
-						</div>	
-						</div>
-						</form>	
-						<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-						</div>
-						
-					<br>
-					{% for answer in answers %}
-						{% if answer.postID == post.id %}
-							<p> {{ answer.text }} </p>
-						{% endif %}
-					{% endfor %}
-					{% set n = n + 1 %}
-				</li>
-			{% endif %}	
-        {% endfor %}
-    </ul>
+		<!-- for posting the answer -->
+        {% set i_str = i|string %} {% set anID = ["reply_modal", i_str] %} {% set theID = anID|join %}
+        <a href="" data-reveal-id={{theID}} class="button tiny">Answer</a>
+        <div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+            <p>{{ post.text }}</p>
+            <form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}' method="post">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <textarea placeholder="Write your answer here" name="user_input" required></textarea>
+                    </div>
+                    <div class="right">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        </div>
+        <br> {% set n = 0 %} {% for answer in answers %} {% if answer.postID == post.id %}
+        <p> {{ answer.text }} </p>
 
+		<!-- upvote button div -->
+        {% set n_str = n|string %} {% set temp = ["up_", n_str] %} {% set upbtnID = temp|join %} 
+        {% set n_str = n|string %} {% set temp = ["down_", n_str] %} {% set dnbtnID = temp|join %} 
+        {% set n_str = n|string %} {% set temp = ["score_", n_str] %} {% set scoreID = temp|join %}
+        
+        <div id={{ upbtnID }} class="up"></div>
+        <div id={{ scoreID }}>{{ answer.score }}</div>
+        <div id={{ dnbtnID }} class="down"></div>
+        
+        <script type="text/javascript">
+        //for upvote/downvote button
+        $(document).ready(function() {
+                    $('#{{ upbtnID }}').click(
+                        function() {
+                            var postID = "{{ answer.id }}";
+                            var data = {
+                                'id': "{{ answer.id }}"
+                            };
+                            var score = document.getElementById('{{ scoreID }}');
+                            var scoreText = score.textContent;
+                            var scoreToInt = parseInt(scoreText, 10);
+                            var newScore = ++scoreToInt;
+                            var scoreToStr = newScore.toString();
+
+                            $(this).css('border-bottom-color', '#26EDEB');
+                            score.textContent = scoreToStr;
+
+                            $.ajax({
+                                url: "/upvote",
+                                data: JSON.stringify(data, null, '\t'),
+                                contentType: 'application/json;charset=UTF-8',
+                                type: 'POST',
+                                success: function(response) {
+                                	;
+                                },
+                                error: function(error) {
+                                    alert("Awww");
+                                }
+                            });
+                        });        
+
+                            $('#{{ dnbtnID }}').click(
+                                function() {
+                                    var postID = "{{ answer.id }}";
+                                    var data = {
+                                        'id': "{{ answer.id }}"
+                                    };
+                                    var score = document.getElementById('{{ scoreID }}');
+                                    var scoreText = score.textContent;
+                                    var scoreToInt = parseInt(scoreText, 10);
+                                    var newScore = --scoreToInt;
+                                    var scoreToStr = newScore.toString();
+
+                                    $(this).css('border-top-color', '#E92F1C');
+                                    score.textContent = scoreToStr;
+
+                                    $.ajax({
+                                        url: "/downvote",
+                                        data: JSON.stringify(data, null, '\t'),
+                                        contentType: 'application/json;charset=UTF-8',
+                                        type: 'POST',
+                                        success: function(response) {;
+                                        },
+                                        error: function(error) {
+                                            alert("Awww");
+                                        }
+                                    });
+
+                                });
+                        });
+        </script>
+        {% set n = n + 1 %} 
+        {% endif %} {% endfor %} 
+    </li>
+    {% set i = i + 1 %}
+    {% endif %} {% endfor %}
+</ul>
 {% endblock %}

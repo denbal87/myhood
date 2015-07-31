@@ -18,6 +18,7 @@ class Answer(db.Model):
 	postID = db.Column(db.Integer)
 	count = db.Column(db.Integer)
 	text = db.Column(db.String)
+	score = db.Column(db.Integer, default = 0)
 	
 	def __init__(self, postID, count, text):
 		self.postID = postID
@@ -30,12 +31,13 @@ class Post(db.Model):
     date = db.Column(db.DateTime)
     nh = db.Column(db.String)
     tag = db.Column(db.String)
+    
 
     def __init__(self, text, hood, aTag):
         self.text = text
         self.nh = hood
         self.date = datetime.now()
-	self.tag = aTag
+        self.tag = aTag
 
 db.create_all()
 
@@ -74,6 +76,86 @@ def get_nh(zipcode):
 @app.route('/')
 def page():
 	return render_template('home.html')
+	
+# upvote a post
+@app.route('/upvote',  methods=["GET", "POST"])
+def upvote():
+	if request.method =="POST":
+		thePostID = int(request.json["id"])
+		thePost = Answer.query.get(thePostID)
+		thePost.score += 1
+		db.session.commit()
+		data = thePost.score
+		return ('', 204)
+
+# downvote an post
+# upvote a post
+@app.route('/downvote',  methods=["GET", "POST"])
+def downvote():
+	if request.method =="POST":
+		thePostID = int(request.json["id"])
+		thePost = Answer.query.get(thePostID)
+		thePost.score -= 1
+		db.session.commit()
+		data = thePost.score
+		return ('', 204)
+
+
+@app.route('/phony')
+def phony():
+	query = request.query_string #args.get('theString')
+	url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?" + query
+	location_dict = requests.get(url).json()
+	theHood = location_dict["address"]["neighbourhood"]
+	if theHood == "Washington Houses":
+		theHood = "Yorkville"
+	return render_template("phony.html", hood = theHood)
+		
+
+
+@app.route('/answer/<postID>/<nh>/<tag>', methods=["GET", "POST"])
+def answer(postID, nh, tag):
+	if request.method == "POST":
+		anAnswer = request.form["user_input"]
+		#search database for post with given postID
+		thePost = Post.query.get(postID) #will this actually let me add answer to post
+		#in database or to its copy?
+		
+		#add answer to the post's answer field
+		theAnswer = Answer(postID, 0, anAnswer)
+		db.session.add(theAnswer)
+		db.session.commit()
+		#return the template with posts and answers for given nh
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer), hood = nh, post_copy = thePost, theTag = tag)
+	else:
+		return render_template("search.html")
+		
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if request.method == "POST":
+        url = "https://api.github.com/search/repositories?q=" + request.form["user_search"]
+        response_dict = requests.get(url).json()
+        return render_template('results.html', api_data=response_dict)
+    else: # request.method == "GET"
+        return render_template("search.html")
+		
+@app.route("/post/<nh>/<tag>", methods=["GET", "POST"])
+def post(nh, tag):
+    if request.method == "POST":
+		post = Post(request.form["user_input"], nh, tag)
+		db.session.add(post)
+		db.session.commit()
+
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer), hood = nh, theTag = tag)
+    else:
+    	return render_template("search.html")
+
+
+@app.errorhandler(404)
+def nope(error):
+	return "We ain't got what yo looking for, fool!", 404	
 
 #get neighborhood list from lat and long values
 @app.route('/getgeo')
@@ -115,63 +197,6 @@ def nh_list():
 	return "Ready!"	
 	
 
-@app.route('/phony')
-def phony():
-	query = request.query_string #args.get('theString')
-	url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?" + query
-	location_dict = requests.get(url).json()
-	theHood = location_dict["address"]["neighbourhood"]
-	if theHood == "Washington Houses":
-		theHood = "Yorkville"
-	return render_template("phony.html", hood = theHood)
-		
-
-
-@app.route('/answer/<postID>/<nh>/<tag>', methods=["GET", "POST"])
-def answer(postID, nh, tag):
-	if request.method == "POST":
-		anAnswer = request.form["user_input"]
-		#search database for post with given postID
-		thePost = Post.query.get(postID) #will this actually let me add answer to post
-		#in database or to its copy?
-		
-		#add answer to the post's answer field
-		theAnswer = Answer(postID, 0, anAnswer)
-		db.session.add(theAnswer)
-		db.session.commit()
-		#return the template with posts and answers for given nh
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh, post_copy = thePost, theTag = tag)
-	else:
-		return render_template("search.html")
-		
-@app.route("/search", methods=["GET", "POST"])
-def search():
-    if request.method == "POST":
-        url = "https://api.github.com/search/repositories?q=" + request.form["user_search"]
-        response_dict = requests.get(url).json()
-        return render_template('results.html', api_data=response_dict)
-    else: # request.method == "GET"
-        return render_template("search.html")
-		
-@app.route("/post/<nh>/<tag>", methods=["GET", "POST"])
-def post(nh, tag):
-    if request.method == "POST":
-		post = Post(request.form["user_input"], nh, tag)
-		db.session.add(post)
-		db.session.commit()
-
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), answers = db.session.query(Answer), hood = nh, theTag = tag)
-    else:
-    	return render_template("search.html")
-
-
-@app.route('/add/<x>/<y>')
-def add(x, y):
-	return str(int(x) + int(y))
-
-@app.errorhandler(404)
-def nope(error):
-	return "We ain't got what yo looking for, fool!", 404	
 
 
 if __name__ == '__main__':

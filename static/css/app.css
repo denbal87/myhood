@@ -89,4 +89,30 @@ h3{
 #title{
 	color: black;
 	font-family: Century Gothic, sans-serif;
-}	
+}
+
+/* upvote/downvote button */
+.purple{
+   border-bottom: 20px solid purple;
+}
+
+.red{
+  border-bottom: 20px solid red;
+}
+
+.up {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 20px solid #C8C4C4;
+ }
+
+.down {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 20px solid #C8C4C4;
+ }
+/****************************************/	

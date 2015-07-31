@@ -89,3 +89,13 @@ prompt(window,
        "extensions.foo-addon.allowGeolocation",
        "Foo Add-on wants to know your location.",
        function callback(allowed) { alert(allowed); });
+	   
+
+	   
+$(document).ready(function() {
+  $('#tr-up').click(
+	function() {
+	  $(this).css('border-bottom-color', 'purple');
+	}
+  );
+});
