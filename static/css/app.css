@@ -115,4 +115,18 @@ h3{
 	border-right: 10px solid transparent;
 	border-top: 20px solid #C8C4C4;
  }
-/****************************************/	
+/****************************************/
+
+/* <hr> between posts */
+.post_line{
+	size: 10px;
+}	
+
+/* box contaning answer */
+.answer_box{
+	display: block;
+	overflow: auto;
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px;
+}
