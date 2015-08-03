@@ -10,8 +10,40 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myhood.db'
 
-
 db = SQLAlchemy(app)
+
+#zipcodes = [ Hood("Inwood", ["10034"]), 
+#		Hood("Morningside Heights", ["10027", "10015"]),
+#		Hood("East Harlem", ["10035", "10029"]),
+#		Hood("Upper West Side", ["10024", "10025"]),
+#		Hood("Upper West Side", ["10024", "10025"]),
+#		Hood("Lincoln Square" : ["10023", "10069"]),
+#		Hood("Upper East Side", ["10028", "10162", "10044", "10075", "10128"]),
+#		Hood("Lennox Hill", ["10065", "10021"]),
+#		Hood("Hell's Kitchen", ["10018", "10036", "10019"]),
+#		Hood("Midtown", ["10019", "10022", "10017", "10016"]),
+#		Hood("Chelsea", ["10001", "10011"]),
+#		Hood("West Village", ["10014"]),
+#		Hood("East Village", ["10009"]),
+#		Hood("Little Italy", ["10013"]),
+#		Hood("Chinatown", ["10013"]), 
+#		Hood("Tribeca", ["10013"]),
+#		Hood("Lower East Side", ["10002", "10003"]),
+#		Hood("Soho", ["10012"]),
+#		Hood("Wall Street", ["10038"]),
+#		Hood("Southern Tip", ["10004"]) ]
+
+# to use with zipcodes
+#class Hood:
+#	def __init__(self, name, zips):
+#		self.name = name
+#		self.zipcodes = zips
+
+class Hood:
+	def __init__(self, name, tupleList):
+		self.name = name
+		self.tupleList = tupleList
+
 
 class Answer(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -41,32 +73,69 @@ class Post(db.Model):
 
 db.create_all()
 
+# neighborhood lists
+hoodList = [ Hood('Harlem', 
+		[ ( (40.819173, -73.961564), (40.834565, -73.950492) ), 
+		( (40.810143, -73.955212), (40.819043, -73.961478) ), ( (40.801243, -73.959418), (40.809884, -73.955298) ),
+		( (40.797084, -73.949204), (40.801308, -73.959504) ), ( (40.818003, -73.934012), (40.797084, -73.949290) ), 
+		( (40.828006, -73.934441), (40.818133, -73.933926) ), ( (40.834435, -73.950406), (40.828136, -73.934699) ) ] ), 
+	
+	Hood('Morningside Heights', 
+		[ ((40.806108, -73.971176), (40.818028, -73.962035)), ((40.801982, -73.961177), (40.806108, -73.971090)),
+		((40.810038, -73.957100), (40.801885, -73.961134)), ((40.813384, -73.956370), (40.810136, -73.957100)), 
+		((40.818093, -73.962078),(40.813416, -73.956370)) ]),
+
+	Hood("Inwood", 
+		[ ( (40.867686, -73.934026), (40.877875, -73.927503) ), ( (40.856261, -73.922439), (40.868205, -73.933855) ),
+		((40.872099, -73.909221), (40.855871, -73.922525)), ((40.878394, -73.926130), (40.872878, -73.909135)) ]),
+
+	Hood("Fort George", 
+		[ ((40.852228, -73.944742), (40.870404, -73.932640)), ((40.847034, -73.928520), (40.852228, -73.944828)),
+		((40.859304, -73.920280), (40.847099, -73.928262)), ((40.870663, -73.932382), (40.858980, -73.919937)) ]),
+
+	Hood("Washington Heights", 
+		[ ((40.834599, -73.950235), (40.852585, -73.947059)), ((40.828235, -73.934871), (40.834989, -73.949978)),
+		((40.846872, -73.928520), (40.828365, -73.934871)), ((40.852910, -73.946888), (40.846937, -73.928606)) ])
+	
+	]
+# takes a list someList containing polygon edge values
+# and a point somePoint. returns 1 if the polygon
+# contains the point and -1 if it does not
+def containsPoint(someList, somePoint):
+		i = 0
+		for aTuple in someList:
+			a = -(aTuple[1][1] - aTuple[0][1])
+			b = aTuple[1][0] - aTuple[0][0]
+			c = -((a * aTuple[0][0]) + (b * aTuple[0][1]))
+			d = (a * somePoint[0]) + (b * somePoint[1]) + c
+			if d < 0:
+				print "edge " + str(i) + " didn't pass the test"
+				return -1
+			else:
+				print "edge " + str(i) + " passed the test"
+				i = i+1
+				continue
+		print "exited the foor loop with i = " + str(i)
+		return 1
+
+
+
 #method for determining neighborhood based on zipcode
 #returns a tuple containing the neighborhood/s	
-def get_nh(zipcode):
-	zipcodes = { "Inwood" : ["10034"], 
-		("Washington Heights") : ["10040", "10033", "10032"],
-		("Hamilton Heights") : ["10039"],
-		("Harlem") : ["10027", "10026", "10030", "10037", "10039"],
-		("Morningside Heights") : ["10027"],
-		("East Harlem") : ["10035", "10029"],
-		("Upper West Side", "hi") : ["10024", "10025"],
-		("Lincoln Square") : ["10023"],
-		("Upper East Side") : ["10021", "10028", "10044", "10065", "10075", "10128"],
-		("Hell's Kitchen") : ["10018", "10036", "10019"],
-		("Midtown") : ["10019", "10022", "10017", "10016"],
-		("Chelsea") : ["10001", "10011"],
-		("West Village") : ["10014"],
-		("East Village") : ["10009"],
-		("Little Italy", "Chinatown", "Tribeca") : ["10013"],
-		("Lower East Side") : ["10002", "10003"],
-		("Soho") : ["10012"],
-		("Wall Street") : ["10038"],
-		("Southern Tip") : ["10004"],}
-		
-	for element in zipcodes:
-		if zipcode in zipcodes[element]:
-			return element	
+#def get_nh(zipcode, lat, longitude):	
+#	
+#	for neighborhood in zipcodes:
+#		if zipcode in neighborhood.zipcodes:
+#			
+#			if neighborhood.name == "Morningside Heights" || neighborhood.name == "Harlem":
+#				if longitude < -73.957534:
+#					return "Morningside Heights"
+#				elif:
+#					return "Harlem"
+#			
+#			if neighborhood.name == ""		 
+#			
+#			return element	
 
 #uncoment to delete entries in database
 #for entry in db.session.query(Post).order_by(Post.id):
@@ -89,7 +158,6 @@ def upvote():
 		return ('', 204)
 
 # downvote an post
-# upvote a post
 @app.route('/downvote',  methods=["GET", "POST"])
 def downvote():
 	if request.method =="POST":
@@ -100,15 +168,22 @@ def downvote():
 		data = thePost.score
 		return ('', 204)
 
-
-@app.route('/phony')
+# determines if current location is within the bounds
+# of the NYC neighborhoods
+# !!! need to make a page that will display a message if
+#user is not in NYC
+@app.route('/phony', methods=["GET", "POST"])
 def phony():
-	query = request.query_string #args.get('theString')
-	url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?" + query
-	location_dict = requests.get(url).json()
-	theHood = location_dict["address"]["neighbourhood"]
-	if theHood == "Washington Houses":
-		theHood = "Yorkville"
+	if request.method =="POST":
+		lat = (request.json["lat"])
+		longit = (request.json["longit"])
+		for hood in hoodList:
+			if containsPoint(hood.tupleList, (40.837392, -73.940622)) > 0:
+				theHood = hood.name
+				break
+			else:	
+				theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!"
+				# return render_template("not_in_nyc.html")
 	return render_template("phony.html", hood = theHood)
 		
 

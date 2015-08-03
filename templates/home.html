@@ -21,11 +21,14 @@
 
 navigator.geolocation.getCurrentPosition(
                 function(position) {
-                var start = 'lat=';
-                var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
-                $.get(
+                //var start = 'lat=';
+                //var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
+                var result = { 'lat' : position.coords.latitude, 'longit' : position.coords.longitude };
+                
+                /* $.get(
                 url="phony",
-                data= result,
+                //data= result,
+                data = JSON.stringify(result, null, '\t'),
                 success=function(data) {
                         $('#my_hood').replaceWith(data);
                 }
@@ -34,7 +37,21 @@ navigator.geolocation.getCurrentPosition(
                     function(error){
                         alert("Error!");
                     }
-            );
+            ); */
+                
+                $.ajax({
+                  url: "phony",
+                  data: JSON.stringify(result, null, '\t'),
+                  contentType: 'application/json;charset=UTF-8',
+                  type: 'POST',
+                  success: function(response) {
+                    $('#my_hood').replaceWith(response);
+                  },
+                  error: function(error) {
+                      alert("Awww");
+                  }
+              });
+          });     
 
 
 </script>	   
