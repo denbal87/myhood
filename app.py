@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, make_response
 import requests
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
+import uuid
 
 
 
@@ -44,6 +45,14 @@ class Hood:
 		self.name = name
 		self.tupleList = tupleList
 
+class Cookie(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	answerID = db.Column(db.Integer)
+	value = db.Column(db.String)
+
+	def __init__(self, answerID, value):
+		self.answerID = answerID
+		self.value = value
 
 class Answer(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -56,6 +65,7 @@ class Answer(db.Model):
 		self.postID = postID
 		self.count = count
 		self.text = text
+		self.cookies = []
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -152,10 +162,38 @@ def upvote():
 	if request.method =="POST":
 		thePostID = int(request.json["id"])
 		thePost = Answer.query.get(thePostID)
-		thePost.score += 1
-		db.session.commit()
-		data = thePost.score
-		return ('', 204)
+		
+		# check if user's browser has already received a
+		# cookie
+		if 'myhoodid' in request.cookies:
+			cookieValue = request.cookies.get('myhoodid')
+			
+			# check if this answer has this cookie associated
+			# with it. if yes, reject upvote
+			cookies = db.session.query(Cookie)
+			for cookie in cookies:
+				if cookie.answerID == thePostID and cookie.value == cookieValue:
+					return '0'
+
+			# if no, add this cookie to this answer
+			# and send go ahead signal
+			theCookie = Cookie(thePostID, cookieValue)
+			db.session.add(theCookie)
+			thePost.score += 1
+			db.session.commit()
+			return '1'
+		else:
+			# generate a unique cookie value
+			# add it to the current user
+			# return go ahead signal
+			newCookie = str(uuid.uuid4())
+			resp = make_response('1')
+			resp.set_cookie('myhoodid', newCookie)
+			theCookie = Cookie(thePostID, newCookie)
+			db.session.add(theCookie)
+			thePost.score += 1
+			db.session.commit()
+			return resp
 
 # downvote an post
 @app.route('/downvote',  methods=["GET", "POST"])
@@ -163,10 +201,38 @@ def downvote():
 	if request.method =="POST":
 		thePostID = int(request.json["id"])
 		thePost = Answer.query.get(thePostID)
-		thePost.score -= 1
-		db.session.commit()
-		data = thePost.score
-		return ('', 204)
+		
+		# check if user's browser has already received a
+		# cookie
+		if 'myhoodid' in request.cookies:
+			cookieValue = request.cookies.get('myhoodid')
+			
+			# check if this answer has this cookie associated
+			# with it. if yes, reject upvote
+			cookies = db.session.query(Cookie)
+			for cookie in cookies:
+				if cookie.answerID == thePostID and cookie.value == cookieValue:
+					return '0'
+
+			# if no, add this cookie to this answer
+			# and send go ahead signal
+			theCookie = Cookie(thePostID, cookieValue)
+			db.session.add(theCookie)
+			thePost.score -= 1
+			db.session.commit()
+			return '1'
+		else:
+			# generate a unique cookie value
+			# add it to the current user
+			# return go ahead signal
+			newCookie = str(uuid.uuid4())
+			resp = make_response('1')
+			resp.set_cookie('myhoodid', newCookie)
+			theCookie = Cookie(thePostID, newCookie)
+			db.session.add(theCookie)
+			thePost.score -= 1
+			db.session.commit()
+			return resp
 
 # determines if current location is within the bounds
 # of the NYC neighborhoods
@@ -178,7 +244,7 @@ def phony():
 		lat = (request.json["lat"])
 		longit = (request.json["longit"])
 		for hood in hoodList:
-			if containsPoint(hood.tupleList, (40.837392, -73.940622)) > 0:
+			if containsPoint(hood.tupleList, (lat, longit)) > 0:
 				theHood = hood.name
 				break
 			else:	

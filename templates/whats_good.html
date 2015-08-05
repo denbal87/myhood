@@ -2,7 +2,7 @@
 <!-- whats_good.html -->
 {% block title %}My Hood {% endblock %} {% block body %}
 <ul>
-    
+    <div id = 'test'> This is a test! </div>
     {% set i = 0 %}	
     {% for post in s: %} 
     {% if post.nh == hood and post.tag == theTag %}
@@ -63,25 +63,32 @@
                             var newScore = ++scoreToInt;
                             var scoreToStr = newScore.toString();
 
-                            $(this).css('border-bottom-color', '#26EDEB');
-                            score.textContent = scoreToStr;
-
                             $.ajax({
                                 url: "/upvote",
                                 data: JSON.stringify(data, null, '\t'),
                                 contentType: 'application/json;charset=UTF-8',
                                 type: 'POST',
                                 success: function(response) {
-                                	;
+                                	if(response != '0'){
+                                		$('#{{ upbtnID }}').css('border-bottom-color', '#26EDEB');
+                            			score.textContent = scoreToStr;
+                            			//$('#test').replaceWith(response);
+                            		}	
+                            		else{
+                            			alert("Already voted!");
+                            		}	
                                 },
                                 error: function(error) {
-                                    alert("Awww");
+                                    alert("You can only vote once on a single answer!");
                                 }
                             });
+
                         });        
 
                             $('#{{ dnbtnID }}').click(
                                 function() {
+                                    
+
                                     var postID = "{{ answer.id }}";
                                     var data = {
                                         'id': "{{ answer.id }}"
@@ -92,21 +99,26 @@
                                     var newScore = --scoreToInt;
                                     var scoreToStr = newScore.toString();
 
-                                    $(this).css('border-top-color', '#E92F1C');
-                                    score.textContent = scoreToStr;
-
-                                    $.ajax({
+                                  $.ajax({
                                         url: "/downvote",
                                         data: JSON.stringify(data, null, '\t'),
                                         contentType: 'application/json;charset=UTF-8',
                                         type: 'POST',
-                                        success: function(response) {;
-                                        },
+                                        success: function(response) {
+                                        	if(response != '0'){
+                                				$('#{{ dnbtnID }}').css('border-top-color', '#E92F1C');
+                            					score.textContent = scoreToStr;
+                            				}	
+		                            		else{
+		                            			alert("Already voted!");
+		                            		}	
+                                	},
                                         error: function(error) {
-                                            alert("Awww");
+                                            alert("You can only vote once on a single answer!");
                                         }
                                     });
 
+                                  	
                                 });
                         });
         </script>
@@ -117,5 +129,6 @@
     {% endif %} {% endfor %}
 
     <hr class="post_line">
+
 </ul>
 {% endblock %}
