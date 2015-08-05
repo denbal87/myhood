@@ -268,7 +268,7 @@ def answer(postID, nh, tag):
 		db.session.commit()
 		#return the template with posts and answers for given nh
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer), hood = nh, post_copy = thePost, theTag = tag)
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag)
 	else:
 		return render_template("search.html")
 		
@@ -289,7 +289,7 @@ def post(nh, tag):
 		db.session.commit()
 
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer), hood = nh, theTag = tag)
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = tag)
     else:
     	return render_template("search.html")
 
