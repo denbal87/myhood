@@ -172,6 +172,7 @@ def upvote():
 			# with it. if yes, reject upvote
 			cookies = db.session.query(Cookie).filter(Cookie.answerID == thePostID)
 			for cookie in cookies:
+				print cookie
 				if cookie.value == cookieValue:
 					return '0'
 
@@ -237,7 +238,7 @@ def downvote():
 # determines if current location is within the bounds
 # of the NYC neighborhoods
 # !!! need to make a page that will display a message if
-#user is not in NYC
+# user is not in NYC
 @app.route('/phony', methods=["GET", "POST"])
 def phony():
 	if request.method =="POST":
@@ -248,7 +249,7 @@ def phony():
 				theHood = hood.name
 				break
 			else:	
-				theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!"
+				theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 
 				# return render_template("not_in_nyc.html")
 	return render_template("phony.html", hood = theHood)
 		
