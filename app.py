@@ -170,9 +170,9 @@ def upvote():
 			
 			# check if this answer has this cookie associated
 			# with it. if yes, reject upvote
-			cookies = db.session.query(Cookie)
+			cookies = db.session.query(Cookie).filter(Cookie.answerID == thePostID)
 			for cookie in cookies:
-				if cookie.answerID == thePostID and cookie.value == cookieValue:
+				if cookie.value == cookieValue:
 					return '0'
 
 			# if no, add this cookie to this answer
@@ -209,9 +209,9 @@ def downvote():
 			
 			# check if this answer has this cookie associated
 			# with it. if yes, reject upvote
-			cookies = db.session.query(Cookie)
+			cookies = db.session.query(Cookie).filter(Cookie.answerID == thePostID)
 			for cookie in cookies:
-				if cookie.answerID == thePostID and cookie.value == cookieValue:
+				if cookie.value == cookieValue:
 					return '0'
 
 			# if no, add this cookie to this answer
