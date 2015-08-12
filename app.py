@@ -72,7 +72,9 @@ class Post(db.Model):
     text = db.Column(db.String)
     date = db.Column(db.DateTime)
     nh = db.Column(db.String)
-    tag = db.Column(db.String)
+    tag = db.Column(db.String) # this is the category the post is under
+    subcat = db.Column(db.String, default = "None") # this is the tag or subcategory that
+    # users can choose
     
 
     def __init__(self, text, hood, aTag):
@@ -247,11 +249,11 @@ def phony():
 		for hood in hoodList:
 			if containsPoint(hood.tupleList, (lat, longit)) > 0:
 				theHood = hood.name
-				break
-			else:	
-				theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 
-				# return render_template("not_in_nyc.html")
-	return render_template("phony.html", hood = theHood)
+				return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+					answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good")
+		theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 
+		return render_template("phony.html", hood = theHood)
+				#return render_template("not_in_nyc.html"
 		
 
 
@@ -282,18 +284,39 @@ def search():
     else: # request.method == "GET"
         return render_template("search.html")
 		
-@app.route("/post/<nh>/<tag>", methods=["GET", "POST"])
-def post(nh, tag):
-    if request.method == "POST":
-		post = Post(request.form["user_input"], nh, tag)
+#@app.route("/post/<nh>/<tag>", methods=["GET", "POST"])
+#def post(nh, tag):
+#    if request.method == "POST":
+#		post = Post(request.form["user_input"], nh, tag)
+#		db.session.add(post)
+#		db.session.commit()
+
+#		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+#		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = tag)
+#    else:
+#    	return render_template("search.html")
+
+@app.route("/post", methods=["GET", "POST"])
+def post():
+	if request.method =="POST":
+		nh = request.json["theHood"]
+		categ = request.json["category"]
+		user_text = request.json["text"]
+		subcateg = request.json["subcategory"]
+		post = Post(user_text, nh, categ)
+		post.subcat = subcateg
 		db.session.add(post)
 		db.session.commit()
 
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = tag)
-    else:
-    	return render_template("search.html")
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ)
 
+@app.route("/load_posts/<theHood>/<tag>")
+def load_posts(theHood, tag):
+	nh = theHood
+	categ = tag
+	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ)
 
 @app.errorhandler(404)
 def nope(error):

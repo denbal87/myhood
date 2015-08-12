@@ -99,3 +99,25 @@ $(document).ready(function() {
 	}
   );
 });
+
+//workaround for dropdown
+$(".drop").on('closed', function() {
+    alert("yup");
+    return false;
+  });
+
+//for autogrowable textarea
+function autoGrow (oField) {
+  if (oField.scrollHeight > oField.clientHeight) {
+    oField.style.height = oField.scrollHeight + "px";
+  }
+}
+
+//for tags onclick
+$(document).ready(function() {
+  $('.tag').click(function() {
+    $(this).css('color', '#47BAE4');
+    alert("ha!");
+  });
+
+});

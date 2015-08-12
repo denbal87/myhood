@@ -2,16 +2,16 @@
 	overflow: hidden;
 	background-image: url("../01.jpg");
 	background-size:   cover;                      /* <------ */
-    	background-repeat: no-repeat;
-    	background-position: center center;
+    background-repeat: no-repeat;
+    background-position: center center;
 	
 }	
 
 #home{
 	background-image: url("../image.jpg");
 	background-size:   cover;                      /* <------ */
-    	background-repeat: no-repeat;
-    	background-position: center center;
+    background-repeat: no-repeat;
+    background-position: center center;
 	overflow: hidden; 
 	/*border: 100px solid white;
 	border-top-width:medium;
@@ -129,4 +129,23 @@ h3{
 	background-color: white;
 	border-radius: 5px;
 	padding: 10px;
+}
+
+/* text are for posting a question */
+textarea.noscrollbars {
+  overflow: hidden;
+}
+
+/* post text area */
+#postText{
+	height: 150px;
+}
+
+/* tags */
+.tag{
+	color: #868484;
+}
+
+.tagColor{
+	color: #43B2E6;
 }

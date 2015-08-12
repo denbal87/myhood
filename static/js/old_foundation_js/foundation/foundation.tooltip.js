@@ -4,7 +4,7 @@
   Foundation.libs.tooltip = {
     name : 'tooltip',
 
-    version : '5.5.2',
+    version : '5.5.1',
 
     settings : {
       additional_inheritable_classes : [],
@@ -57,31 +57,6 @@
 
       self.create(this.S(instance));
 
-      function _startShow(elt, $this, immediate) {
-        if (elt.timer) {
-          return;
-        }
-
-        if (immediate) {
-          elt.timer = null;
-          self.showTip($this);
-        } else {
-          elt.timer = setTimeout(function () {
-            elt.timer = null;
-            self.showTip($this);
-          }.bind(elt), self.settings.hover_delay);
-        }
-      }
-
-      function _startHide(elt, $this) {
-        if (elt.timer) {
-          clearTimeout(elt.timer);
-          elt.timer = null;
-        }
-
-        self.hide($this);
-      }
-
       $(this.scope)
         .off('.tooltip')
         .on('mouseenter.fndtn.tooltip mouseleave.fndtn.tooltip touchstart.fndtn.tooltip MSPointerDown.fndtn.tooltip',
@@ -97,7 +72,7 @@
           if (/mouse/i.test(e.type) && self.ie_touch(e)) {
             return false;
           }
-          
+
           if ($this.hasClass('open')) {
             if (Modernizr.touch && /touchstart|MSPointerDown/i.test(e.type)) {
               e.preventDefault();
@@ -110,20 +85,17 @@
               e.preventDefault();
               S(settings.tooltip_class + '.open').hide();
               is_touch = true;
-              // close other open tooltips on touch
-              if ($('.open[' + self.attr_name() + ']').length > 0) {
-               var prevOpen = S($('.open[' + self.attr_name() + ']')[0]);
-               self.hide(prevOpen);
-              }
             }
 
             if (/enter|over/i.test(e.type)) {
-              _startShow(this, $this);
-
+              this.timer = setTimeout(function () {
+                var tip = self.showTip($this);
+              }.bind(this), self.settings.hover_delay);
             } else if (e.type === 'mouseout' || e.type === 'mouseleave') {
-              _startHide(this, $this);
+              clearTimeout(this.timer);
+              self.hide($this);
             } else {
-              _startShow(this, $this, true);
+              self.showTip($this);
             }
           }
         })
@@ -137,11 +109,11 @@
           } else if ($(this).data('tooltip-open-event-type') == 'mouse' && /MSPointerDown|touchstart/i.test(e.type)) {
             self.convert_to_touch($(this));
           } else {
-            _startHide(this, $(this));
+            self.hide($(this));
           }
         })
         .on('DOMNodeRemoved DOMAttrModified', '[' + this.attr_name() + ']:not(a)', function (e) {
-          _startHide(this, S(this));
+          self.hide(S(this));
         });
     },
 
@@ -171,16 +143,17 @@
     },
 
     selector : function ($target) {
-      var dataSelector = $target.attr(this.attr_name()) || $target.attr('data-selector');
+      var id = $target.attr('id'),
+          dataSelector = $target.attr(this.attr_name()) || $target.attr('data-selector');
 
-      if (typeof dataSelector != 'string') {
+      if ((id && id.length < 1 || !id) && typeof dataSelector != 'string') {
         dataSelector = this.random_str(6);
         $target
           .attr('data-selector', dataSelector)
           .attr('aria-describedby', dataSelector);
       }
 
-      return dataSelector;
+      return (id && id.length > 0) ? id : dataSelector;
     },
 
     create : function ($target) {
@@ -244,13 +217,7 @@
           nub.addClass('rtl');
           left = target.offset().left + target.outerWidth() - tip.outerWidth();
         }
-
         objPos(tip, (target.offset().top + target.outerHeight() + 10), 'auto', 'auto', left);
-        // reset nub from small styles, if they've been applied
-        if (nub.attr('style')) {
-          nub.removeAttr('style');
-        }
-        
         tip.removeClass('tip-override');
         if (classes && classes.indexOf('tip-top') > -1) {
           if (Foundation.rtl) {
@@ -319,6 +286,7 @@
 
     hide : function ($target) {
       var $tip = this.getTip($target);
+
       $tip.fadeOut(150, function () {
         $tip.find('.tap-to-close').remove();
         $tip.off('click.fndtn.tooltip.tapclose MSPointerDown.fndtn.tapclose');

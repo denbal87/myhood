@@ -1,189 +1,171 @@
 <!DOCTYPE html>
 <!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
-<html class="no-js" lang="en" >
+<html class="no-js" lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{% endblock %}</title>
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
-
-  <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-  
-  <script type=text/javascript src="{{
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+    <script type=text/javascript src="{{
   url_for('static', filename='jquery.js') }}"></script>
-  
 </head>
-</head>
+
 <body id="base">
-
-<nav class="top-bar" data-topbar role="navigation">
-  <ul class="title-area">
-    <li class="name">
-      <h1><a href="/">My Hood</a></h1>
-    </li>
-     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-    <li class="toggle-topbar menu-icon"><a href="#"><span>{{ hood }}</span></a></li>
-  </ul>
-
-  <section class="top-bar-section">
-    <!-- Right Nav Section -->
-    <ul class="right">
-		<li class="has-dropdown">
-			<a id="feeds" href="#">Feeds</a>
-			<ul class="dropdown">
-			  <li><a href="#">What's good?</a></li>
-			  <li><a href="#">Where's that place?</a></li>
-			  <li><a href="#">Food</a></li>
-			  <li><a href="#">Clothes</a></li>
-			</ul>
-		</li>
-		
-		  <li class="has-dropdown">
-        <a id="feeds" href="#">Ask</a>
-        <ul class="dropdown">
-			<li><a href="#" data-reveal-id="myModal">What's good?</a></li>
-				
-				<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-				<h2 id="modalTitle">Post to What's Good</h2>
-				<form action="/post/{{ hood }}/whats_good" method="post">	
-					<div class="row">
-						<div class="large-12 columns">
-							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
-						</div>
-						<div class="right">
-							<button type="submit">Post</button>
-						</div>	
-					</div>
-				</form>	
-				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-				</div>
-				
-			  
-			  
-			  <li><a href="#" data-reveal-id="myModal1">Where's that place?</a></li>
-				
-				<div id="myModal1" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-				<h2 id="modalTitle">Post to Where's that place?</h2>
-				<form action="/post/{{ hood }}/where" method="post">	
-					<div class="row">
-						<div class="large-12 columns">
-							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
-						</div>
-						<div class="right">
-							<button type="submit">Post</button>
-						</div>	
-					</div>
-				</form>	
-				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-				</div>
-				
-			  <li><a href="#" data-reveal-id="myModal2">Food</a></li>
-				
-				<div id="myModal2" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-				<h2 id="modalTitle">Post to Food</h2>
-				<form action="/post/{{ hood }}/food" method="post">	
-					<div class="row">
-						<div class="large-12 columns">
-							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
-						</div>
-						<div class="right">
-							<button type="submit">Post</button>
-						</div>	
-					</div>
-				</form>	
-				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-				</div>
-				
-			  <li><a href="#" data-reveal-id="myModal3">Clothes</a></li>
-				
-				<div id="myModal3" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-				<h2 id="modalTitle">Post to Clothes</h2>
-				<form action="/post/{{ hood }}/clothes" method="post">	
-					<div class="row">
-						<div class="large-12 columns">
-							<textarea placeholder="Type stuff here" name="user_input" required></textarea>
-						</div>
-						<div class="right">
-							<button type="submit">Post</button>
-						</div>	
-					</div>
-				</form>	
-				<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-				</div>
-				
-			  
-			</ul>
-		</li>
-		
-		<li class="has-dropdown">
-			<a id="feeds" href="#">Answer</a>
-			<ul class="dropdown">
-			  <li><a href="#">What's good?</a></li>
-			  <li><a href="#">Where's that place?</a></li>
-			  <li><a href="#">Another topic</a></li>
-			</ul>
-		</li>	
-		<li class="has-dropdown">
-        <a id="feeds" href="#">Change Neighborhood</a>
-        <ul class="dropdown">
-        <li class="has-dropdown">
-			<a id="feeds" href="#">Manhattan</a>
-			<ul class="dropdown">
-				<li><a href="#">Central Harlem</a></li>
-				<li><a href="#">East Harlem</a></li>
-				<li><a href="#">Washington Heights</a></li>
-			</ul>
-				
-          <li><a href="#">Bronx</a></li>
-		  <li><a href="#">Brooklyn</a></li>
-		  <li><a href="#">Queens</a></li>
+    <nav class="top-bar" data-topbar role="navigation">
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="/">My Hood</a></h1>
+            </li>
+            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+            <li class="toggle-topbar menu-icon"><a href="#"><span>{{ hood }}</span></a></li>
         </ul>
-		</li>
-	
-	</ul>
-
-    <!-- Left Nav Section -->
-    <ul class="left">
-		<li class="has-form">
-		<div class="row collapse">
-		<div class="large-8 small-9 columns">
-		  <input type="text" placeholder="Find Stuff">
-		</div>
-		<div class="large-4 small-3 columns">
-		  <a href="#" id="search_bttn" class="alert button expand">Search</a>
-		</div>
-		</div>
-		</li>
-	</ul>	
-  </section>
-</nav>
-
-
-<div>
-	<div class="row">
-		<div class="medium-12 column">	
-			<div id="main_panel" class="panel">
-				{% block body %}{% endblock %}	
-			</div>
-		</div>
-		
-		
-	</div>
-</div>
-
-  
-	
-	
-	
-  <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
-  <script>
+        <section class="top-bar-section">
+            <!-- Right Nav Section -->
+            <ul class="right">
+                <li class="has-dropdown">
+                    <a id="feeds" href="#">Feeds</a>
+                    <ul class="dropdown">
+                        <li><a href="#">What's good?</a></li>
+                        <li><a href="#">Where's that place?</a></li>
+                        <li><a href="#">Food</a></li>
+                        <li><a href="#">Clothes</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a id="feeds" href="#">Ask</a>
+                    <ul class="dropdown">
+                        
+                        <li><a href="#" data-reveal-id="myModal">What's good?</a></li>
+                        <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                            <h2 id="modalTitle">Post to What's Good</h2>
+                            <form action="/post/{{ hood }}/whats_good" method="post">
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
+                                    </div>
+                                    <!-- tags for user to choose from + "add your own tag" button -->
+                                    <div>
+                                    	<button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown drop">Dropdown Button</button><br>
+										<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
+										  <li><a href="#">This is a link</a></li>
+										  <li><a href="#">This is another</a></li>
+										  <li><a href="#">Yet another</a></li>
+										</ul>
+                                    </div>
+                                    <div class="right">
+                                        <button type="submit">Post</button>
+                                    </div>
+                                </div>
+                            </form>
+                          
+                        </div>
+                        <li><a href="#" data-reveal-id="myModal1">Where's that place?</a></li>
+                        <div id="myModal1" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                            <h2 id="modalTitle">Post to Where's that place?</h2>
+                            <form action="/post/{{ hood }}/where" method="post">
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
+                                    </div>
+                                    <div class="right">
+                                        <button type="submit">Post</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        </div>
+                        <li><a href="#" data-reveal-id="myModal2">Food</a></li>
+                        <div id="myModal2" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                            <h2 id="modalTitle">Post to Food</h2>
+                            <form action="/post/{{ hood }}/food" method="post">
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
+                                    </div>
+                                    <div class="right">
+                                        <button type="submit">Post</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        </div>
+                        <li><a href="#" data-reveal-id="myModal3">Clothes</a></li>
+                        <div id="myModal3" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+                            <h2 id="modalTitle">Post to Clothes</h2>
+                            <form action="/post/{{ hood }}/clothes" method="post">
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
+                                    </div>
+                                    <div class="right">
+                                        <button type="submit">Post</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        </div>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a id="feeds" href="#">Answer</a>
+                    <ul class="dropdown">
+                        <li><a href="#">What's good?</a></li>
+                        <li><a href="#">Where's that place?</a></li>
+                        <li><a href="#">Another topic</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a id="feeds" href="#">Change Neighborhood</a>
+                    <ul class="dropdown">
+                        <li class="has-dropdown">
+                            <a id="feeds" href="#">Manhattan</a>
+                            <ul class="dropdown">
+                                <li><a href="#">Central Harlem</a></li>
+                                <li><a href="#">East Harlem</a></li>
+                                <li><a href="#">Washington Heights</a></li>
+                            </ul>
+                            <li><a href="#">Bronx</a></li>
+                            <li><a href="#">Brooklyn</a></li>
+                            <li><a href="#">Queens</a></li>
+                    </ul>
+                    </li>
+            </ul>
+            <!-- Left Nav Section -->
+            <ul class="left">
+                <li class="has-form">
+                    <div class="row collapse">
+                        <div class="large-8 small-9 columns">
+                            <input type="text" placeholder="Find Stuff">
+                        </div>
+                        <div class="large-4 small-3 columns">
+                            <a href="#" id="search_bttn" class="alert button expand">Search</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </nav>
+    <div>
+        <div class="row">
+            <div class="medium-12 column">
+                <div id="main_panel" class="panel">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+    <script>
     $(document).foundation();
-  </script>
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
 </body>
+
 </html>
