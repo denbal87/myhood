@@ -1,20 +1,26 @@
 {% extends "base.html" %}
 <!-- whats_good.html -->
-{% block title %}My Hood {% endblock %} {% block body %} {% if theTag == "whats_good" %}
-<h1>What's Good?</h1> {% endif %}
+{% block title %}My Hood {% endblock %} 
+{% block body %} 
+
+{% if theTag == "whats_good" %}
+<h1>What's Good?</h1> 
+{% endif %}
+
 <div id="answer_box">
     <!-- <form action="/post/{{ hood }}/{{ theTag }}" method="post"> -->
     <p>
         <textarea id="postText" name="user_input" required placeholder="Compose your question" class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
     </p>
+    <h5>Select a tag</h5>
     <!-- tag buttons -->
-    <div class="row">
-        <div class="tag small-2 columns" id="music">Music</div>
-        <div class="tag small-2 columns" id="bars">Bars</div>
-        <div class="tag small-2 columns" id="clubs">Clubs</div>
-        <div class="tag small-2 columns" id="events">Events</div>
-        <div class="tag small-4 columns" id="createOwn">create your own</div>
-    </div>
+    <ul class="inline-list">
+      <li><div class="tag" id="music">Music</div></li>
+        <li><div class="tag" id="bars">Bars</div></li>
+        <li><div class="tag" id="clubs">Clubs</div></li>
+        <li><div class="tag" id="events">Events</div></li>
+    </ul>
+
     <div class="right">
         <button id="submit_post">Post</button>
     </div>
@@ -79,7 +85,7 @@
                                 score.textContent = scoreToStr;
                                 //$('#test').replaceWith(response);
                             } else {
-                                alert("Already voted!");
+                                window.alert("Already voted!");
                             }
                         },
                         error: function(error) {
@@ -113,7 +119,7 @@
                                 $('#{{ dnbtnID }}').css('border-top-color', '#E92F1C');
                                 score.textContent = scoreToStr;
                             } else {
-                                alert("Already voted!");
+                                window.alert("Already voted!");
                             }
                         },
                         error: function(error) {
@@ -140,13 +146,19 @@ $(document).ready(function() {
     $('.tag').click(function(event) {
 
         $(this).toggleClass("tagColor");
-        //alert(event.target.id); // get id of element that triggered the click
+        // get id of element that triggered the click
         activeTag = event.target.id;
-        tagCopy = activeTag;
-        var tagArr = ["#music", "#bars", "#clubs", "#events"];
-        for (var i = 0; i < tagArr.length; i++) {
-            if (tagArr[i] != '#' + activeTag && $(tagArr[i]).css('color') === 'rgb(67, 178, 230)')
-                $(tagArr[i]).toggleClass('tagColor');
+        //rgb(134, 132, 132)
+        if($("#"+activeTag).css('color') === 'rgb(67, 178, 230)'){
+            tagCopy = activeTag;
+            var tagArr = ["#music", "#bars", "#clubs", "#events"];
+            for (var i = 0; i < tagArr.length; i++) {
+                if (tagArr[i] != '#' + activeTag && $(tagArr[i]).css('color') === 'rgb(67, 178, 230)')
+                    $(tagArr[i]).toggleClass('tagColor');
+            }
+        }
+        else{
+            tagCopy = "None";
         }
 
     });
@@ -154,8 +166,9 @@ $(document).ready(function() {
     //for submitting a question
     $('#submit_post').click(function() {
         //first check if user didn't select a tag
-        if (typeof tagCopy === "undefined") {
-            tagCopy = "None";
+        if (tagCopy === "None") {
+            window.alert("You must select a tag!");
+            return;
         }
         var theText = $("#postText").val();
         var data = {
@@ -181,10 +194,5 @@ $(document).ready(function() {
     });
 });
 </script>
-<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
-<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
-<script>
-$(document).foundation();
-</script>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
 {% endblock %}

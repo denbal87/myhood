@@ -13,45 +13,21 @@
 	Have generic map so can click on a nh and it will show on map
 	
 	
-	IMPORTANT:
-	new design: use mostly zipcodes due to lack of neighborhood database.
-	in case zipcodes overlap in regards to neighborhoods, look up the 
-	neighborhood value in JSON.
-	
-	Need to decide what neighborhoods to include, i.e. whether to use
-	parent or children neighborhoods in certain cases.
-	
-	Neighborhoods:
-	10031, 30, 37, 39, 32, 33, 40, 34, 27, 26
-	Inwood
-	Wash. Heights
-	Hamilton Heights
-	Manhattanville
-	Morningside Heights
-	Harlem
-	East Harlem
-	
-	10025, 24, 23 
-	Upper West Side:
-		100 - 96: Park West Village
-	74 - 60: Lincoln Towers = Lincoln Square:
-		San Juan Hill
-	
-	
-	
-	
-	
-	
-	
-	database:
-	
-	id | post text | post neighborhood | answer (yes/no)
+8/12/15 to do:
 
+* Main Menu:
 
-	use module for home page nh selection if user choses to opt out for
-	location
-	
-	for posting an answer:
-		pass post text + answer text to the view function. then retrieve post text
-		and search database for a post with that text. then add asnwer to that post.
-	 
+	-Categories:
+		What's Good?
+		(Clothes) or generic "help me find..." or "lookinf for..." with tags
+
+	-Tags:
+		just a dropdown with tags--remove custom tag for now.
+
+	-Change Neighborhood:
+		just a dropdown with all neighborhoods.
+
+* Map all neighborhoods (at least in MH)
+
+* Neighborhood map--maybe one that shows what neighborhood the user is in
+	by highlighting the borders; can have a different image for each neighborhood.	 
