@@ -25,20 +25,6 @@ navigator.geolocation.getCurrentPosition(
                 //var result = start.concat(position.coords.latitude, '&lon=', position.coords.longitude, '&format=json');
                 var result = { 'lat' : position.coords.latitude, 'longit' : position.coords.longitude };
                 
-                /* $.get(
-                url="phony",
-                //data= result,
-                data = JSON.stringify(result, null, '\t'),
-                success=function(data) {
-                        $('#my_hood').replaceWith(data);
-                }
-        );
-                    },
-                    function(error){
-                        alert("Error!");
-                    }
-            ); */
-                
                 $.ajax({
                   url: "phony",
                   data: JSON.stringify(result, null, '\t'),
@@ -76,18 +62,10 @@ navigator.geolocation.getCurrentPosition(
 	<br>
 	<br>
 	<center><h1 id="pic_txt">My Hood</h1>
+
 	<br>
-	<center><h1 id="pic_txt2">New App</h1>
 	<br>
-	<br>
-	<button href="#" id="home_bttn" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown">Select Your Home Neighborhood</button><br>
-	<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-	  <li><a href="#">Manhattan</a></li>
-	  <li><a href="#">Bronx</a></li>
-	  <li><a href="#">Queens</a></li>
-	  <li><a href="#">Brooklyn</a></li>
-	  <li><a href="#">Staten Island</a></li>
-	</ul>
+
 	
  </div> 
 </div>

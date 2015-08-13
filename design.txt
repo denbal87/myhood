@@ -18,11 +18,7 @@
 * Main Menu:
 
 	-Categories:
-		What's Good?
 		(Clothes) or generic "help me find..." or "lookinf for..." with tags
-
-	-Tags:
-		just a dropdown with tags--remove custom tag for now.
 
 	-Change Neighborhood:
 		just a dropdown with all neighborhoods.
@@ -33,6 +29,4 @@
 	by highlighting the borders; can have a different image for each neighborhood.	
 
 * Change front page: 
-	- remove "new app"
-	- remove button
 	- add "locating your hood" message--how??

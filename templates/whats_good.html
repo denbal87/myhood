@@ -26,7 +26,14 @@
         <button id="submit_post">Post</button>
     </div>
     <!-- /form -->
-</div>
+    </div>
+    <br>
+    <br>
+
+{% if subcat != "None" %}
+<h3> {{ subcat}} </h3>
+{% endif %}
+
 <ul id="postList">
     {% set i = 0 %} 
     {% for post in s: %} 
@@ -299,6 +306,10 @@ $(document).ready(function() {
             return;
         }
         var theText = $("#postText").val();
+        if(theText === ""){
+            window.alert("Did you forget to write a question?");
+            return;
+        }
         var data = {
             'theHood': "{{ hood }}",
             'category': '{{ theTag }}',
