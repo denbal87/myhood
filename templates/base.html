@@ -27,90 +27,24 @@
             <!-- Right Nav Section -->
             <ul class="right">
                 <li class="has-dropdown">
-                    <a id="feeds" href="#">Feeds</a>
+                    <a id="feeds" href="/whats_good/{{ hood }}/None">What's Good?</a>
                     <ul class="dropdown">
-                        <li><a href="#">What's good?</a></li>
-                        <li><a href="#">Where's that place?</a></li>
+                        <li><a href="/whats_good/{{ hood }}/bars">Bars</a></li>
+                        <li><a href="/whats_good/{{ hood }}/clubs">Clubs</a></li>
+                        <li><a href="/whats_good/{{ hood }}/events">Events</a></li>
+                        <li><a href="/whats_good/{{ hood }}/music">Music</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-dropdown">
+                    <a id="feeds" href="#">Looking For...</a>
+                    <ul class="dropdown">
                         <li><a href="#">Food</a></li>
                         <li><a href="#">Clothes</a></li>
+                        <li><a href="#">Recreation</a></li>
                     </ul>
                 </li>
-                <li class="has-dropdown">
-                    <a id="feeds" href="#">Ask</a>
-                    <ul class="dropdown">
-                        
-                        <li><a href="#" data-reveal-id="myModal">What's good?</a></li>
-                        <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                            <h2 id="modalTitle">Post to What's Good</h2>
-                            <form action="/post/{{ hood }}/whats_good" method="post">
-                                <div class="row">
-                                    <div class="large-12 columns">
-                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
-                                    </div>
-                                
-                                    <div class="right">
-                                        <button type="submit">Post</button>
-                                    </div>
-                                </div>
-                            </form>
-                          
-                        </div>
-                        <li><a href="#" data-reveal-id="myModal1">Where's that place?</a></li>
-                        <div id="myModal1" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                            <h2 id="modalTitle">Post to Where's that place?</h2>
-                            <form action="/post/{{ hood }}/where" method="post">
-                                <div class="row">
-                                    <div class="large-12 columns">
-                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
-                                    </div>
-                                    <div class="right">
-                                        <button type="submit">Post</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        </div>
-                        <li><a href="#" data-reveal-id="myModal2">Food</a></li>
-                        <div id="myModal2" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                            <h2 id="modalTitle">Post to Food</h2>
-                            <form action="/post/{{ hood }}/food" method="post">
-                                <div class="row">
-                                    <div class="large-12 columns">
-                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
-                                    </div>
-                                    <div class="right">
-                                        <button type="submit">Post</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        </div>
-                        <li><a href="#" data-reveal-id="myModal3">Clothes</a></li>
-                        <div id="myModal3" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                            <h2 id="modalTitle">Post to Clothes</h2>
-                            <form action="/post/{{ hood }}/clothes" method="post">
-                                <div class="row">
-                                    <div class="large-12 columns">
-                                        <textarea placeholder="Type stuff here" name="user_input" required></textarea>
-                                    </div>
-                                    <div class="right">
-                                        <button type="submit">Post</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        </div>
-                    </ul>
-                </li>
-                <li class="has-dropdown">
-                    <a id="feeds" href="#">Answer</a>
-                    <ul class="dropdown">
-                        <li><a href="#">What's good?</a></li>
-                        <li><a href="#">Where's that place?</a></li>
-                        <li><a href="#">Another topic</a></li>
-                    </ul>
-                </li>
+        
                 <li class="has-dropdown">
                     <a id="feeds" href="#">Change Neighborhood</a>
                     <ul class="dropdown">
@@ -125,7 +59,7 @@
                             <li><a href="#">Brooklyn</a></li>
                             <li><a href="#">Queens</a></li>
                     </ul>
-                    </li>
+                </li>
             </ul>
             <!-- Left Nav Section -->
             <ul class="left">

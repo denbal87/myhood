@@ -30,4 +30,9 @@
 * Map all neighborhoods (at least in MH)
 
 * Neighborhood map--maybe one that shows what neighborhood the user is in
-	by highlighting the borders; can have a different image for each neighborhood.	 
+	by highlighting the borders; can have a different image for each neighborhood.	
+
+* Change front page: 
+	- remove "new app"
+	- remove button
+	- add "locating your hood" message--how??

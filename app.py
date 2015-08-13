@@ -250,10 +250,16 @@ def phony():
 			if containsPoint(hood.tupleList, (lat, longit)) > 0:
 				theHood = hood.name
 				return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-					answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good")
+					answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", subcat = "None")
 		theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 
 		return render_template("phony.html", hood = theHood)
 				#return render_template("not_in_nyc.html"
+
+@app.route('/whats_good/<theHood>/<subcateg>')
+def whats_good(theHood, subcateg):
+	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", subcat = subcateg)	
+
 		
 
 
@@ -271,7 +277,7 @@ def answer(postID, nh, tag):
 		db.session.commit()
 		#return the template with posts and answers for given nh
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag)
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag, subcat = "None")
 	else:
 		return render_template("search.html")
 		
@@ -309,14 +315,14 @@ def post():
 		db.session.commit()
 
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ)
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
 
 @app.route("/load_posts/<theHood>/<tag>")
 def load_posts(theHood, tag):
 	nh = theHood
 	categ = tag
 	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ)
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
 
 @app.errorhandler(404)
 def nope(error):

@@ -4,8 +4,9 @@
 {% block body %} 
 
 {% if theTag == "whats_good" %}
-<h1>What's Good?</h1> 
+    <h1>What's Good?</h1> 
 {% endif %}
+
 
 <div id="answer_box">
     <!-- <form action="/post/{{ hood }}/{{ theTag }}" method="post"> -->
@@ -27,11 +28,14 @@
     <!-- /form -->
 </div>
 <ul id="postList">
-    {% set i = 0 %} {% for post in s: %} {% if post.nh == hood and post.tag == theTag %}
+    {% set i = 0 %} 
+    {% for post in s: %} 
+    {% if post.nh == hood and post.tag == theTag %}
+    {% if subcat == "None" %}
     <!--______________________________ -->
     <li>
         <hr class="post_line">
-        <td> {{ post.text }} {{ post.subcat}} </td>
+        <td> {{ post.text }} </td>
         <br>
         <!-- for posting the answer -->
         {% set i_str = i|string %} {% set anID = ["reply_modal", i_str] %} {% set theID = anID|join %}
@@ -50,7 +54,9 @@
             </form>
             <a class="close-reveal-modal" aria-label="Close">&#215;</a>
         </div>
-        <br> {% for answer in answers %} {% if answer.postID == post.id %}
+        <br> 
+        {% for answer in answers %} 
+        {% if answer.postID == post.id %}
         <div class="answer_box">
             <p> {{ answer.text }} </p>
             <!-- upvote button div -->
@@ -133,16 +139,138 @@
 
         });
         </script>
-        <br> {% endif %} {% endfor %}
+        <br> 
+        {% endif %} 
+        {% endfor %}
     </li>
-    {% set i = i + 1 %} {% endif %} {% endfor %}
+    {% set i = i + 1 %} 
+    
+    {% elif post.subcat == subcat %}
+        <!--______________________________ -->
+    <li>
+        <hr class="post_line">
+        <td> {{ post.text }} </td>
+        <br>
+        <!-- for posting the answer -->
+        {% set i_str = i|string %} {% set anID = ["reply_modal", i_str] %} {% set theID = anID|join %}
+        <a href="" data-reveal-id={{theID}} class="button tiny">Answer</a>
+        <div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+            <p>{{ post.text }}</p>
+            <form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}' method="post">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <textarea placeholder="Write your answer here" name="user_input" required></textarea>
+                    </div>
+                    <div class="right">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        </div>
+        <br> 
+        {% for answer in answers %} 
+        {% if answer.postID == post.id %}
+        <div class="answer_box">
+            <p> {{ answer.text }} </p>
+            <!-- upvote button div -->
+            {% set n_str = answer.id|string %} {% set temp = ["up_", n_str] %} {% set upbtnID = temp|join %} {% set n_str = answer.id|string %} {% set temp = ["down_", n_str] %} {% set dnbtnID = temp|join %} {% set n_str = answer.id|string %} {% set temp = ["score_", n_str] %} {% set scoreID = temp|join %}
+            <div id="{{ upbtnID }}" class="up"></div>
+            <div id="{{ scoreID }}">{{ answer.score }}</div>
+            <div id="{{ dnbtnID }}" class="down"></div>
+        </div>
+        <script type="text/javascript">
+        //for upvote/downvote button
+        $(document).ready(function() {
+            $('#{{ upbtnID }}').click(
+                function() {
+                    var postID = "{{ answer.id }}";
+                    var data = {
+                        'id': "{{ answer.id }}"
+                    };
+                    var score = document.getElementById('{{ scoreID }}');
+                    var scoreText = score.textContent;
+                    var scoreToInt = parseInt(scoreText, 10);
+                    var newScore = ++scoreToInt;
+                    var scoreToStr = newScore.toString();
+
+                    $.ajax({
+                        url: "/upvote",
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        type: 'POST',
+                        success: function(response) {
+                            if (response != '0') {
+                                $('#{{ upbtnID }}').css('border-bottom-color', '#26EDEB');
+                                score.textContent = scoreToStr;
+                                //$('#test').replaceWith(response);
+                            } else {
+                                window.alert("Already voted!");
+                            }
+                        },
+                        error: function(error) {
+                            alert("You can only vote once on a single answer!");
+                        }
+                    });
+
+                });
+
+            $('#{{ dnbtnID }}').click(
+                function() {
+
+
+                    var postID = "{{ answer.id }}";
+                    var data = {
+                        'id': "{{ answer.id }}"
+                    };
+                    var score = document.getElementById('{{ scoreID }}');
+                    var scoreText = score.textContent;
+                    var scoreToInt = parseInt(scoreText, 10);
+                    var newScore = --scoreToInt;
+                    var scoreToStr = newScore.toString();
+
+                    $.ajax({
+                        url: "/downvote",
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        type: 'POST',
+                        success: function(response) {
+                            if (response != '0') {
+                                $('#{{ dnbtnID }}').css('border-top-color', '#E92F1C');
+                                score.textContent = scoreToStr;
+                            } else {
+                                window.alert("Already voted!");
+                            }
+                        },
+                        error: function(error) {
+                            alert("You can only vote once on a single answer!");
+                        }
+                    });
+
+
+                });
+
+
+        });
+        </script>
+        <br> 
+        {% endif %} 
+        {% endfor %}
+    </li>
+    {% set i = i + 1 %} 
+    
+
+    {% endif %}
+
+    {% endif %} 
+    {% endfor %}
     <hr class="post_line">
 </ul>
 <script type="text/javascript">
 //for tag button onclick
 $(document).ready(function() {
     var activeTag;
-    var tagCopy;
+    var tagCopy = "None";
     $('.tag').click(function(event) {
 
         $(this).toggleClass("tagColor");
