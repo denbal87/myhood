@@ -46,18 +46,20 @@ db = SQLAlchemy(app)
 
 
 # change time to New York loca time
-from_zone = tz.gettz('UTC')
-to_zone = tz.gettz('America/New_York')
+def localTime():
+	from_zone = tz.gettz('UTC')
+	to_zone = tz.gettz('America/New_York')
 
-# utc = datetime.utcnow()
-utc = datetime.strptime(datetime.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
+	# utc = datetime.utcnow()
+	utc = datetime.strptime(datetime.utcnow().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
 
-# Tell the datetime object that it's in UTC time zone since 
-# datetime objects are 'naive' by default
-utc = utc.replace(tzinfo=from_zone)
+	# Tell the datetime object that it's in UTC time zone since 
+	# datetime objects are 'naive' by default
+	utc = utc.replace(tzinfo=from_zone)
 
-# Convert time zone
-central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M')
+	# Convert time zone
+	central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M')
+	return central
 
 
 
@@ -103,7 +105,7 @@ class Post(db.Model):
     def __init__(self, text, hood, aTag):
         self.text = text
         self.nh = hood
-        self.date = central#datetime.now().strftime('posted on %b %d at %-I:%-M')
+        self.date = localTime()#datetime.now().strftime('posted on %b %d at %-I:%-M')
         self.tag = aTag
 
 db.create_all()
