@@ -5,6 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 import uuid
 
+from datetime import datetime
+from dateutil import tz
+
+
 
 
 app = Flask(__name__)
@@ -40,6 +44,24 @@ db = SQLAlchemy(app)
 #		self.name = name
 #		self.zipcodes = zips
 
+
+# change time to New York loca time
+from_zone = tz.gettz('UTC')
+to_zone = tz.gettz('America/New_York')
+
+# utc = datetime.utcnow()
+utc = datetime.strptime(datetime.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
+
+# Tell the datetime object that it's in UTC time zone since 
+# datetime objects are 'naive' by default
+utc = utc.replace(tzinfo=from_zone)
+
+# Convert time zone
+central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M')
+
+
+
+
 class Hood:
 	def __init__(self, name, tupleList):
 		self.name = name
@@ -70,7 +92,8 @@ class Answer(db.Model):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String)
-    date = db.Column(db.DateTime)
+    #date = db.Column(db.DateTime)
+    date = db.Column(db.String)
     nh = db.Column(db.String)
     tag = db.Column(db.String) # this is the category the post is under
     subcat = db.Column(db.String, default = "None") # this is the tag or subcategory that
@@ -80,7 +103,7 @@ class Post(db.Model):
     def __init__(self, text, hood, aTag):
         self.text = text
         self.nh = hood
-        self.date = datetime.now()
+        self.date = central#datetime.now().strftime('posted on %b %d at %-I:%-M')
         self.tag = aTag
 
 db.create_all()

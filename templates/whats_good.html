@@ -40,7 +40,8 @@
     <!--______________________________ -->
     <li>
         <hr class="post_line">
-        <td> {{ post.text }} </td>
+        <td> <h5>{{ post.text }}</h5> </td>
+        <h10> {{ post.date }} </h10>
         <br>
         <!-- for posting the answer -->
         {% set i_str = i|string %} {% set anID = ["reply_modal", i_str] %} {% set theID = anID|join %}
