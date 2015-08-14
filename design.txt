@@ -15,18 +15,18 @@
 	
 8/12/15 to do:
 
+* Map all neighborhoods (at least in MH)
+
 * Main Menu:
 
-	-Categories:
-		(Clothes) or generic "help me find..." or "lookinf for..." with tags
-
 	-Change Neighborhood:
-		just a dropdown with all neighborhoods.
-
-* Map all neighborhoods (at least in MH)
+		finish the dropdown button
 
 * Neighborhood map--maybe one that shows what neighborhood the user is in
 	by highlighting the borders; can have a different image for each neighborhood.	
 
 * Change front page: 
 	- add "locating your hood" message--how??
+	-add something like "explore the neighborhoods"
+
+* add dates to posts so users can see what's relevant?

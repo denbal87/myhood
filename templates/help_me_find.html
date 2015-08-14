@@ -4,7 +4,7 @@
 {% block body %} 
 
 
-<h1>What's Good?</h1> 
+<h1>Help Me Find</h1> 
 
 <div id="answer_box">
     <!-- <form action="/post/{{ hood }}/{{ theTag }}" method="post"> -->
@@ -14,10 +14,11 @@
     <h5>Select a tag</h5>
     <!-- tag buttons -->
     <ul class="inline-list">
-      <li><div class="tag" id="music">Music</div></li>
-        <li><div class="tag" id="bars">Bars</div></li>
-        <li><div class="tag" id="clubs">Clubs</div></li>
-        <li><div class="tag" id="events">Events</div></li>
+      <li><div class="tag_help" id="food">Food</div></li>
+        <li><div class="tag_help" id="clothes">Clothes</div></li>
+        <li><div class="tag_help" id="recreation">Recreation</div></li>
+        <!--li><div class="tag_help" id="events">Events</div></li
+        add more tags of necessary-->
     </ul>
 
     <div class="right">
@@ -275,9 +276,9 @@
 //for tag button onclick
 $(document).ready(function() {
     var activeTag;
-    var tagCopy = "None";
     var activeColor = 'rgb(67, 178, 230)';
-    $('.tag').click(function(event) {
+    var tagCopy = "None";
+    $('.tag_help').click(function(event) {
 
         $(this).toggleClass("tagColor");
         // get id of element that triggered the click
@@ -285,7 +286,7 @@ $(document).ready(function() {
         //rgb(134, 132, 132)
         if($("#"+activeTag).css('color') === activeColor){
             tagCopy = activeTag;
-            var tagArr = ["#music", "#bars", "#clubs", "#events"];
+            var tagArr = ["#food", "#clothes", "#clubs", "#recreation"];
             for (var i = 0; i < tagArr.length; i++) {
                 if (tagArr[i] != '#' + activeTag && $(tagArr[i]).css('color') === activeColor)
                     $(tagArr[i]).toggleClass('tagColor');

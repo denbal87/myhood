@@ -156,7 +156,7 @@ def containsPoint(someList, somePoint):
 
 @app.route('/')
 def page():
-	return render_template('home.html')
+	return render_template('my_hood.html')
 	
 # upvote a post
 @app.route('/upvote',  methods=["GET", "POST"])
@@ -241,8 +241,8 @@ def downvote():
 # of the NYC neighborhoods
 # !!! need to make a page that will display a message if
 # user is not in NYC
-@app.route('/phony', methods=["GET", "POST"])
-def phony():
+@app.route('/home', methods=["GET", "POST"])
+def home():
 	if request.method =="POST":
 		lat = (request.json["lat"])
 		longit = (request.json["longit"])
@@ -258,7 +258,12 @@ def phony():
 @app.route('/whats_good/<theHood>/<subcateg>')
 def whats_good(theHood, subcateg):
 	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", subcat = subcateg)	
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", subcat = subcateg)
+
+@app.route('/help_me_find/<theHood>/<subcateg>')
+def help_me_find(theHood, subcateg):
+	return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "help_me_find", subcat = subcateg)	
 
 		
 
