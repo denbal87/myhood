@@ -48,7 +48,7 @@
         <a href="" data-reveal-id={{theID}} class="button tiny">Answer</a>
         <div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
             <p>{{ post.text }}</p>
-            <form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}' method="post">
+            <form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}/{{ subcat }}' method="post">
                 <div class="row">
                     <div class="large-12 columns">
                         <textarea placeholder="Write your answer here" name="user_input" required></textarea>
@@ -155,14 +155,15 @@
         <!--______________________________ -->
     <li>
         <hr class="post_line">
-        <td> {{ post.text }} </td>
+        <td> <h5>{{ post.text }}</h5> </td>
+        <h10> {{ post.date }} </h10>
         <br>
         <!-- for posting the answer -->
         {% set i_str = i|string %} {% set anID = ["reply_modal", i_str] %} {% set theID = anID|join %}
         <a href="" data-reveal-id={{theID}} class="button tiny">Answer</a>
         <div id={{theID}} class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
             <p>{{ post.text }}</p>
-            <form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}' method="post">
+            <form action='/answer/{{post.id}}/{{hood}}/{{post.tag}}/{{ subcat }}' method="post">
                 <div class="row">
                     <div class="large-12 columns">
                         <textarea placeholder="Write your answer here" name="user_input" required></textarea>

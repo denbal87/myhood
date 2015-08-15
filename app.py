@@ -58,7 +58,7 @@ def localTime():
 	utc = utc.replace(tzinfo=from_zone)
 
 	# Convert time zone
-	central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M')
+	central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M%p')
 	return central
 
 
@@ -293,9 +293,10 @@ def help_me_find(theHood, subcateg):
 		
 
 
-@app.route('/answer/<postID>/<nh>/<tag>', methods=["GET", "POST"])
-def answer(postID, nh, tag):
+@app.route('/answer/<postID>/<nh>/<tag>/<subcateg>', methods=["GET", "POST"])
+def answer(postID, nh, tag, subcateg):
 	if request.method == "POST":
+		subcategory = "None"
 		anAnswer = request.form["user_input"]
 		#search database for post with given postID
 		thePost = Post.query.get(postID) #will this actually let me add answer to post
@@ -305,9 +306,17 @@ def answer(postID, nh, tag):
 		theAnswer = Answer(postID, 0, anAnswer)
 		db.session.add(theAnswer)
 		db.session.commit()
-		#return the template with posts and answers for given nh
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag, subcat = "None")
+		if subcateg != "None":
+			subcategory = subcateg
+		
+		if tag == "whats_good":
+			#return the template with posts and answers for given nh
+			return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag, subcat = subcategory)
+		elif tag == "help_me_find":
+			#return the template with posts and answers for given nh
+			return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag, subcat = subcategory)	
 	else:
 		return render_template("search.html")
 		
@@ -344,14 +353,22 @@ def post():
 		db.session.add(post)
 		db.session.commit()
 
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+		if categ == "whats_good":
+			return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+		elif categ == "help_me_find":
+			return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
 
 @app.route("/load_posts/<theHood>/<tag>")
 def load_posts(theHood, tag):
 	nh = theHood
 	categ = tag
-	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+	if categ == "whats_good":
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+	elif categ == "help_me_find":
+		return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
 
 @app.errorhandler(404)
