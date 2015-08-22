@@ -4,6 +4,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 import uuid
+import os
 
 from datetime import datetime
 from dateutil import tz
@@ -60,8 +61,6 @@ def localTime():
 	# Convert time zone
 	central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M%p')
 	return central
-
-
 
 
 class Hood:
@@ -132,8 +131,130 @@ hoodList = [ Hood('Harlem',
 
 	Hood("Washington Heights", 
 		[ ((40.834599, -73.950235), (40.852585, -73.947059)), ((40.828235, -73.934871), (40.834989, -73.949978)),
-		((40.846872, -73.928520), (40.828365, -73.934871)), ((40.852910, -73.946888), (40.846937, -73.928606)) ])
+		((40.846872, -73.928520), (40.828365, -73.934871)), ((40.852910, -73.946888), (40.846937, -73.928606)) ]),
+
+	Hood("Upper West Side", 
+		[ ((40.781362, -73.988206), (40.805892, -73.971040)), ((40.776293, -73.976018), (40.781362, -73.988163)), 
+		((40.800597, -73.958208), (40.776195, -73.975932)), ((40.805860, -73.971125), (40.800694, -73.958337)) ]),
+
+	Hood("Central Park", 
+		[ ((40.768233, -73.981683), (40.800467, -73.958122)), ((40.764528, -73.973100), (40.768201, -73.981898)),
+		((40.796959, -73.949368), (40.764463, -73.973057)), ((40.800532, -73.958165), (40.796894, -73.949539)) ]), 
+
+	Hood("Lincoln Square", 
+		[ ((40.773141, -73.994128), (40.781460, -73.988163)), ((40.768233, -73.981898), (40.773141, -73.994128)), 
+		((40.776261, -73.975889), (40.768103, -73.981983)), ((40.781525, -73.988163), (40.776293, -73.975889)) ]),
+
+	Hood("East Harlem", 
+		[ ((40.787992, -73.955853), (40.818106, -73.933837)), ((40.782800, -73.943588), (40.786017, -73.954531)),
+		((40.785594, -73.939511), (40.782800, -73.943588)), ((40.794984, -73.929125), (40.785659, -73.939468)),
+		((40.801157, -73.929211), (40.794984, -73.929125)), ((40.806088, -73.931691), (40.801150, -73.929288)), 
+		((40.818203, -73.933837), (40.805958, -73.932163)) ]), 
+
+	Hood("Yorkville",
+		[ ((40.774386, -73.957515), (40.785337, -73.949447)), ((40.770226, -73.947516), (40.774386, -73.957515)),
+		((40.773118, -73.944125), (40.773118, -73.944125)), ((40.777896, -73.942237), (40.773118, -73.944125)), 
+		((40.782802, -73.943567), (40.777863, -73.942194)), ((40.785337, -73.949404), (40.785337, -73.949404)) ]),
+
+	Hood("Upper East Side",
+		[ ((40.777051, -73.963781), (40.787969, -73.955798)), ((40.774353, -73.957515), (40.777051, -73.963781)),
+		((40.777051, -73.963781), (40.774386, -73.957515))    
+		]), 
+
+	Hood("Upper East Side", 
+		[ ((40.772501, -73.967171), (40.777018, -73.963781), ((40.765870, -73.951249), (40.772468, -73.967128)),
+		((40.770226, -73.947601), (40.765155, -73.951850)), ((40.777051, -73.963781), (40.770193, -73.947473)))
+		]),
+
+	Hood("Lennox Hill", 
+		[((40.764315, -73.972995), (40.772473, -73.967116)), ((40.758594, -73.958404), (40.764315, -73.973038)),
+		((40.765875, -73.951237), (40.758562, -73.958490)), ((40.772408, -73.967073), (40.765843, -73.951280)) ]), 
+
+	Hood("Hell's Kitchen",
+		[ ((40.758269, -74.007885), (40.774033, -73.996684)), ((40.752223, -73.993466), (40.758172, -74.007756)),
+		((40.768053, -73.981964), (40.752255, -73.993423)), ((40.774033, -73.996684), (40.768118, -73.981921))   
+		]), 
+
+	Hood("Midtown", 
+		[ ((40.764188, -73.984980), (40.768251, -73.982062)), ((40.759052, -73.972663), (40.764220, -73.984894)),
+		((40.762888, -73.969874), (40.759085, -73.972706)), ((40.768186, -73.982105), (40.762953, -73.969831))    
+		]),
+
+	Hood("Midtown", 
+		[ ((40.749885, -73.987898), (40.761848, -73.979058)), ((40.746991, -73.981161), (40.749885, -73.987770)),
+		((40.759052, -73.972406), (40.746991, -73.981203)), ((40.761880, -73.979058), (40.759020, -73.972363))   
+		]),
+
+	Hood("Midtown",
+		[ ((40.752225, -73.993606), (40.756126, -73.990902)), ((40.749787, -73.987684), (40.752290, -73.993606)),
+		((40.753688, -73.985066), (40.749754, -73.987812)), ((40.756126, -73.990902), (40.753591, -73.984980))   
+		]),
+
+	Hood("Theater District",
+		[ ((40.756061, -73.990902), (40.764188, -73.984980)), ((40.753688, -73.985109), (40.756159, -73.990902)),
+		((40.761880, -73.979101), (40.753721, -73.985066)),  ((40.764220, -73.984980), (40.761880, -73.979101)) 
+		]),
 	
+	Hood("Midtown South", 
+		[ ((40.737334, -73.996996), (40.749819, -73.987941)), ((40.734602, -73.990259), (40.737432, -73.996996)),
+		((40.747023, -73.981204), (40.734700, -73.990344)), ((40.749819, -73.987812), (40.747071, -73.981334))   
+		]), 
+
+	Hood("Chelsea", 
+		[ ((40.743508, -74.012189), (40.759178, -74.009657)), ((40.737330, -73.996911), (40.743508, -74.012232)),
+		((40.749816, -73.987770), (40.737363, -73.996911)), ((40.758983, -74.009657), (40.749881, -73.987856))   
+		]), 
+
+	Hood("Turtle Bay", 
+		[ ((40.752137, -73.977929), (40.763060, -73.969904)), ((40.747943, -73.968016), (40.752137, -73.977972)),
+		((40.758314, -73.958660), (40.747911, -73.967930)), ((40.763060, -73.969947), (40.758314, -73.958703))
+		]),
+
+	Hood("Murray Hill", 
+		[ ((40.747127, -73.981612), (40.752329, -73.977878)), ((40.742997, -73.971698), (40.747094, -73.981612)),
+		((40.748070, -73.967836), (40.742997, -73.971698)), ((40.752361, -73.977921), (40.748070, -73.967836))   
+		]),
+
+	Hood("Kips Bay",
+		[ ((40.740158, -73.986678), (40.747247, -73.981528)), ((40.734403, -73.972860), (40.740223, -73.986678)),
+		((40.743085, -73.971658), (40.734370, -73.972645)), ((40.747279, -73.981528), (40.743052, -73.971615))   
+		]),
+
+	Hood("Gramercy Park", 
+		[ ((40.734618, -73.990464), (40.740244, -73.986387)), ((40.731285, -73.982546), (40.734618, -73.990529)),
+		((40.736911, -73.978491), (40.731301, -73.982525)), ((40.740260, -73.986387), (40.736927, -73.978469))    
+		]),
+
+	Hood("Stuyvesant", 
+		[ ((40.731317, -73.982654), (40.736976, -73.978598)), ((40.726683, -73.971645), (40.731350, -73.982675)),
+		((40.729301, -73.971452), (40.726667, -73.971581)), ((40.734927, -73.973491), (40.729301, -73.971452)),
+		((40.736960, -73.978576), (40.734862, -73.973384))     
+		]),
+
+	Hood("Meatpacking",
+		[ ((40.739382, -74.012983), (40.743479, -74.012253)), ((40.739382, -74.005344), (40.739334, -74.013004)),
+		((40.740927, -74.005065), (40.739399, -74.005344)), ((40.743723, -74.012275), (40.740927, -74.005065))   
+		]),
+
+	Hood("West Village", 
+		[ ((40.729198, -74.011542), (40.739441, -74.010384)), ((40.728775, -74.006993), (40.729198, -74.011585)),
+		 ((40.739409, -74.006436), (40.728775, -74.006993)), ((40.739506, -74.010555), ())
+		]),
+
+	Hood("West Village", 
+		[ ((40.739465, -74.006500), (40.741042, -74.005406)), ((40.735970, -73.997895), (40.739465, -74.006500)),
+		 ((40.737384, -73.996758), (40.735970, -73.997874)), ((40.740994, -74.005384), (40.737417, -73.996780))
+		]),
+
+	Hood("West Village", 
+		[ ((40.728807, -74.007187), (40.739409, -74.006500)), ((40.728352, -74.002852), (40.728840, -74.007229)),
+		 ((40.736092, -73.997831), (40.728352, -74.002895)), ((40.739441, -74.006500), (40.735962, -73.997917))
+		])
+
+
+	#Hood("", 
+	#	[ ((), ()), ((), ()), ((), ()), ((), ())
+	#	])
 	]
 # takes a list someList containing polygon edge values
 # and a point somePoint. returns 1 if the polygon
@@ -182,7 +303,7 @@ def containsPoint(someList, somePoint):
 @app.route('/')
 def page():
 	return render_template('my_hood.html')
-	
+
 # upvote a post
 @app.route('/upvote',  methods=["GET", "POST"])
 def upvote():
@@ -272,25 +393,31 @@ def home():
 		lat = (request.json["lat"])
 		longit = (request.json["longit"])
 		for hood in hoodList:
-			if containsPoint(hood.tupleList, (lat, longit)) > 0:
+			if containsPoint(hood.tupleList, (40.741099, -74.008603)) > 0:
 				theHood = hood.name
 				return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-					answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", subcat = "None")
+					answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, 
+					theTag = "whats_good", subcat = "None")
 		theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 
 		return render_template("phony.html", hood = theHood)
 				#return render_template("not_in_nyc.html"
 
 @app.route('/whats_good/<theHood>/<subcateg>')
 def whats_good(theHood, subcateg):
+	aList = [1,2,3]
 	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", subcat = subcateg)
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", 
+		subcat = subcateg, aList = aList)
 
 @app.route('/help_me_find/<theHood>/<subcateg>')
 def help_me_find(theHood, subcateg):
 	return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "help_me_find", subcat = subcateg)	
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "help_me_find",
+		subcat = subcateg)	
 
-		
+@app.route('/say_hi')
+def say_hi():
+	return "Hello!!!!"		
 
 
 @app.route('/answer/<postID>/<nh>/<tag>/<subcateg>', methods=["GET", "POST"])
@@ -312,11 +439,13 @@ def answer(postID, nh, tag, subcateg):
 		if tag == "whats_good":
 			#return the template with posts and answers for given nh
 			return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag, subcat = subcategory)
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, 
+			theTag = tag, subcat = subcategory)
 		elif tag == "help_me_find":
 			#return the template with posts and answers for given nh
 			return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, theTag = tag, subcat = subcategory)	
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, 
+			theTag = tag, subcat = subcategory)	
 	else:
 		return render_template("search.html")
 		
@@ -353,12 +482,15 @@ def post():
 		db.session.add(post)
 		db.session.commit()
 
+
 		if categ == "whats_good":
 			return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+			subcat = "None")
 		elif categ == "help_me_find":
 			return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+			subcat = "None")
 
 @app.route("/load_posts/<theHood>/<tag>")
 def load_posts(theHood, tag):
@@ -366,10 +498,12 @@ def load_posts(theHood, tag):
 	categ = tag
 	if categ == "whats_good":
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+		subcat = "None")
 	elif categ == "help_me_find":
 		return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, subcat = "None")
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+		subcat = "None")
 
 @app.errorhandler(404)
 def nope(error):
@@ -385,7 +519,8 @@ def getgeo():
 	lat = lat_file.readline().rstrip()
 	long = long_file.readline().rstrip()
 	while lat:
-		url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?lat=" + lat + "&lon=" + long + "&format=json"
+		url = "http://open.mapquestapi.com/nominatim/v1/reverse.php?lat=" + lat + "&lon="
+		+ long + "&format=json"
 		url_file.write(url + "\n")
 		nh_dict = requests.get(url).json()
 		#nh_list.append(nh_dict["address"]["neighbourhood"]

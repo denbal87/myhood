@@ -4,12 +4,13 @@
 {% block body %} 
 
 
-<h1>Help Me Find It</h1> 
+<h1>Help Me Find It in {{ hood }}</h1> 
 
 <div id="answer_box">
     <!-- <form action="/post/{{ hood }}/{{ theTag }}" method="post"> -->
     <p>
-        <textarea id="postText" name="user_input" required placeholder="Compose your question" class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
+        <textarea id="postText" name="user_input" required placeholder=
+        "Compose your question" class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
     </p>
     <h5>Select a tag</h5>
     <!-- tag buttons -->
@@ -67,7 +68,11 @@
         <div class="answer_box">
             <p> {{ answer.text }} </p>
             <!-- upvote button div -->
-            {% set n_str = answer.id|string %} {% set temp = ["up_", n_str] %} {% set upbtnID = temp|join %} {% set n_str = answer.id|string %} {% set temp = ["down_", n_str] %} {% set dnbtnID = temp|join %} {% set n_str = answer.id|string %} {% set temp = ["score_", n_str] %} {% set scoreID = temp|join %}
+            {% set n_str = answer.id|string %} {% set temp = ["up_", n_str] %} 
+            {% set upbtnID = temp|join %} {% set n_str = answer.id|string %} 
+            {% set temp = ["down_", n_str] %} {% set dnbtnID = temp|join %} 
+            {% set n_str = answer.id|string %} {% set temp = ["score_", n_str] %}
+             {% set scoreID = temp|join %}
             <div id="{{ upbtnID }}" class="up"></div>
             <div id="{{ scoreID }}">{{ answer.score }}</div>
             <div id="{{ dnbtnID }}" class="down"></div>

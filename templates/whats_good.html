@@ -4,12 +4,13 @@
 {% block body %} 
 
 
-<h1>What's Good?</h1> 
+<h1>What's Good in {{ hood }}? </h1> 
 
 <div id="answer_box">
     <!-- <form action="/post/{{ hood }}/{{ theTag }}" method="post"> -->
     <p>
-        <textarea id="postText" name="user_input" required placeholder="Compose your question" class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
+        <textarea id="postText" name="user_input" required placeholder="Compose your question"
+         class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
     </p>
     <h5>Select a tag</h5>
     <!-- tag buttons -->
