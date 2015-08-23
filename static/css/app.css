@@ -1,6 +1,6 @@
 #base{
 	overflow: hidden;
-	background-image: url("../01.jpg");
+	background-image: url("../image.jpg");
 	background-size:   cover;                      /* <------ */
     background-repeat: no-repeat;
     background-position: center center;
@@ -20,6 +20,9 @@
 	border-bottom-width: medium;*/
 }	
 
+#section_headline{
+	font-family: Century Gothic, sans-serif;
+}
 
 #main_panel{
 	opacity: 0.97;

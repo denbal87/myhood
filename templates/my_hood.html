@@ -31,7 +31,8 @@ navigator.geolocation.getCurrentPosition(
                   contentType: 'application/json;charset=UTF-8',
                   type: 'POST',
                   success: function(response) {
-                    $('#my_hood').replaceWith(response);
+                    window.location.replace('/load_posts/'+ response +'/whats_good');
+                    //$('#my_hood').replaceWith(response);
                   },
                   error: function(error) {
                       alert("Error Determining Neighborhood");
