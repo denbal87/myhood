@@ -1,11 +1,15 @@
-#base, #home, #wgt_body{
-	overflow: hidden;
+#home{
+	overflow: auto;
 	background-image: url("../image.jpg");
-	background-size:   cover;                      /* <------ */
+	background-size:   cover;
     background-repeat: no-repeat;
     background-position: center center;
-}	
+}
 
+#base{
+	overflow: auto;
+	background-image: url("../background-2.jpg");
+}
 
 #section_headline{
 	font-family: Century Gothic, sans-serif;

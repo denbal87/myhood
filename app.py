@@ -245,7 +245,7 @@ def home():
 		lat = (request.json["lat"])
 		longit = (request.json["longit"])
 		for hood in hoodList:
-			if containsPoint(hood.tupleList, (40.724358, -73.992620)) > 0:
+			if containsPoint(hood.tupleList, (lat, longit)) > 0:
 				theHood = hood.name
 				return theHood
 		theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 

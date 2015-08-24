@@ -35,7 +35,6 @@
                         <li><a href="/whats_good/{{ hood }}/music">Music</a></li>
                     </ul>
                 </li>
-
                 <li class="has-dropdown">
                     <a href="/help_me_find/{{ hood }}/None">Help Me Find It</a>
                     <ul class="dropdown">
@@ -44,7 +43,6 @@
                         <li><a href="/help_me_find/{{ hood }}/recreation">Recreation</a></li>
                     </ul>
                 </li>
-        
                 <li class="has-dropdown">
                     <a href="#">Change Neighborhood</a>
                     <ul class="dropdown">
@@ -60,23 +58,28 @@
                             <li><a href="#">Brooklyn</a></li>
                             <li><a href="#">Queens</a></li>
                     </ul>
-                </li>
+                    </li>
             </ul>
             <!-- Left Nav Section -->
-            <ul class="left">
+            <!--ul class="left">
                 <li class="has-form">
                     <div class="row collapse">
                         <div class="large-8 small-9 columns">
                             <input type="text" placeholder="Find Stuff">
                         </div>
-                        <div class="large-4 small-3 columns">
-                            <a href="#" id="search_bttn" class="alert button expand">Search</a>
-                        </div>
                     </div>
                 </li>
-            </ul>
+            </ul-->
         </section>
     </nav>
+    
+    <a href="#" data-reveal-id="myModal">Change Neighborhood</a>
+    <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <p>Click on any neighborhood to load its page</p>
+        <img src="/static/nh_map.png">
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+    
     <div>
         <div class="row">
             <div class="medium-12 column">
@@ -92,7 +95,6 @@
     $(document).foundation();
     </script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-
 </body>
 
 </html>
