@@ -11,6 +11,11 @@
 	background-image: url("../background-2.jpg");
 }
 
+#nh_map{
+	height:100%;
+	width:100%;
+}
+
 #section_headline{
 	font-family: Century Gothic, sans-serif;
 }
