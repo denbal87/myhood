@@ -8,7 +8,8 @@
 
 #base{
 	overflow: auto;
-	background-image: url("../background-2.jpg");
+	/*background-image: url("../background-2.jpg");*/
+	background-color: #6EEED1;
 }
 
 #nh_map{
