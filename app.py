@@ -152,6 +152,10 @@ def containsPoint(someList, somePoint):
 	#db.session.delete(entry)
 	#db.session.commit()
 
+@app.route('/test')
+def test():
+	return render_template('test.html')
+
 @app.route('/')
 def page():
 	return render_template('my_hood.html')
