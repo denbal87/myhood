@@ -18,7 +18,7 @@
 	width:100%;
 }
 
-#section_headline{
+.section_headline{
 	font-family: Century Gothic, sans-serif;
 	color: white;
 }
@@ -142,7 +142,8 @@ textarea.noscrollbars {
 
 /* post text area */
 #postText{
-	height: 150px;
+	height: 100px;
+	border-radius: 10px;
 }
 
 /* tags */
