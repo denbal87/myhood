@@ -8,7 +8,7 @@
 
 #base{
 	overflow: auto; 
-	background: url("../background-4.jpg") no-repeat center center fixed;
+	background: url("../background-5.jpg") no-repeat center center fixed;
 	background-size:   cover;
     
 }
@@ -20,6 +20,7 @@
 
 #section_headline{
 	font-family: Century Gothic, sans-serif;
+	color: white;
 }
 
 #main_panel{
@@ -129,7 +130,7 @@ h3{
 .answer_box{
 	display: block;
 	overflow: auto;
-	background-color: #F8F29A;
+	background-color: white;
 	border-radius: 5px;
 	padding: 10px;
 }
@@ -145,7 +146,7 @@ textarea.noscrollbars {
 }
 
 /* tags */
-.tag{
+.tag, .tag_help, .tag_prompt, h5, h10{
 	color: white;
 }
 
