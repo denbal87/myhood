@@ -33,6 +33,13 @@
 
 }	
 
+#reveal-modal-inner {
+    margin: 0 auto;
+    position: relative;
+    max-width: 768px;
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
 
 #pic img {
 	position:absolute; z-index: -1;
