@@ -1,7 +1,26 @@
-{% extends "base.html" %}
-<!-- whats_good.html -->
-{% block title %}My Hood {% endblock %} 
-{% block body %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+    <script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
+	<title>Map</title>
+</head>
+<body>
 	<button onclick="history.back()">Go back</button>
 	<center><img id="nh_map" src="/static/nh_map.jpg">
-{% endblock %}
+
+	<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+    <script>
+    $(document).foundation();
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
