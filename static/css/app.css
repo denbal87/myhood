@@ -8,7 +8,7 @@
 
 #base{
 	overflow: auto; 
-	background: url("../background-5.jpg") no-repeat center center fixed;
+	background: url("../background-7.jpg") no-repeat center center fixed;
 	background-size:   cover;
     
 }
@@ -38,7 +38,7 @@
 	position:absolute; z-index: -1;
 }
 	
-#pic_txt, #pic_txt2 {
+#pic_txt {
 	color:white;
 	font-family: Century Gothic, sans-serif;
 	font-size: 50px;
@@ -46,6 +46,11 @@
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 26.3999996185303px;
+}
+
+#pic_txt_2 {
+	color:white;
+	font-family: Century Gothic, sans-serif;
 }
 
 /*#myModal{	
@@ -153,4 +158,8 @@ textarea.noscrollbars {
 
 .tagColor{
 	color: #43B2E6;
+}
+
+ul{
+	list-style-type: none;
 }
