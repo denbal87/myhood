@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
+<!-- whats_good.html -->
+{% block title %}My Hood {% endblock %} 
+{% block body %} 
+	<button onclick="history.back()">Go back</button>
 	<center><img id="nh_map" src="/static/nh_map.jpg">
-</body>
-</html>
+{% endblock %}
