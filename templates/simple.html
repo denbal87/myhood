@@ -1,31 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Simple Page</title>
-	<script src="{{ url_for('static', filename='jquery.js') }}"></script>
-
+	<meta charset="UTF-8">
+	<title>Not in NYC</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+    <script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
 </head>
-
-<body>
-	<h1 id="heading">Heres something!</h1>
-
-
-	<script>
-		$.get(
-		url="test",
-		data= "unmodified", 
-		success=function(data) {
-			$('#heading').replaceWith(data);
-			alert("hmm...");
-		}
-		);	
-		        
-
+<body id="not_in_nyc">
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br><br><br><br>
+	<div style="text-align:center">
+	<h2 class="pic_txt_2">Looks like you're not in NYC</h2>
+	<br>
+	<h2 class="pic_txt_2">We're working hard on bringing MyHood to your city!</h2>
+	<div>
+	<br>
+	
+	<div class="row">
 			
+		<form action="/check_key" method="post">
+			<div>
+			<center><input type="text" name="key" placeholder="Enter key" style="height: 40px; width: 150px; background: transparent;
+			border-radius: 10px; color:white;"/>
+			<button type="submit" class="small button" style="display:block; border-radius: 10px">Submit</button>
+			</div>
+		</form>
+		</div>
+	</div>	
 
-
-
-		
-	</script>
+	<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+    <script>
+    $(document).foundation();
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

@@ -152,10 +152,18 @@ def containsPoint(someList, somePoint):
 	#db.session.delete(entry)
 	#db.session.commit()
 
-@app.route('/test')
-def test():
-	return render_template('test.html')
-	#return send_file("static/nh_map.jpg", mimetype='image/gif')
+@app.route('/map')
+def map():
+	return render_template('map.html')
+
+@app.route('/check_key', methods=["GET", "POST"])
+def check_key():
+	if request.method == "POST":
+		key = request.form["key"]
+		if key == "znamensk87":
+			return render_template("map.html")
+		else:
+			return render_template("simple.html")
 
 
 @app.route('/')
@@ -251,12 +259,16 @@ def home():
 		lat = (request.json["lat"])
 		longit = (request.json["longit"])
 		for hood in hoodList:
-			if containsPoint(hood.tupleList, (lat, longit)) > 0:
+			if containsPoint(hood.tupleList, (61.666686, 100.539063)) > 0:
 				theHood = hood.name
-				return theHood
-		theHood = "Looks like you're not in NYC! We're working hard on bringing MyHood to your city soon!" 
-		return render_template("phony.html", hood = theHood)
-				#return render_template("not_in_nyc.html"
+				return theHood 
+		return "not in nyc"
+
+@app.route('/not_in_nyc')
+def not_in_nyc():
+	return render_template('simple.html')
+
+
 
 @app.route('/whats_good/<theHood>/<subcateg>')
 def whats_good(theHood, subcateg):
@@ -269,11 +281,7 @@ def whats_good(theHood, subcateg):
 def help_me_find(theHood, subcateg):
 	return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "help_me_find",
-		subcat = subcateg)	
-
-@app.route('/say_hi')
-def say_hi():
-	return "Hello!!!!"		
+		subcat = subcateg)		
 
 
 @app.route('/answer/<postID>/<nh>/<tag>/<subcateg>', methods=["GET", "POST"])

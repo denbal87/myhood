@@ -32,8 +32,11 @@
                     contentType: 'application/json;charset=UTF-8',
                     type: 'POST',
                     success: function(response) {
+                      if(response != "not in nyc")
                         window.location.replace('/load_posts/' + response + '/whats_good');
                         //$('#my_hood').replaceWith(response);
+                      else
+                        window.location.replace('/not_in_nyc');
                     },
                     error: function(error) {
                         alert("Error Determining Neighborhood");
@@ -60,7 +63,7 @@
             <center>
                 <h1 id="pic_txt">My Hood</h1>
                 <br>
-                <h2 id="pic_txt_2">Explore the neighborhoods of New York</h2>
+                <h2 class="pic_txt_2">Explore the neighborhoods of New York</h2>
                 <br>
                 <br>
         </div>

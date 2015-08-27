@@ -1,9 +1,7 @@
 #home{
 	overflow: auto;
-	background-image: url("../image.jpg");
+	background: url("../image.jpg") no-repeat center center fixed;
 	background-size:   cover;
-    background-repeat: no-repeat;
-    background-position: center center;
 }
 
 #base{
@@ -11,6 +9,11 @@
 	background: url("../background-7.jpg") no-repeat center center fixed;
 	background-size:   cover;
     
+}
+
+#not_in_nyc{
+	background: url("../background-8.jpg") no-repeat center center fixed;
+	background-size:   cover;
 }
 
 #nh_map{
@@ -48,7 +51,7 @@
 	line-height: 26.3999996185303px;
 }
 
-#pic_txt_2 {
+.pic_txt_2 {
 	color:white;
 	font-family: Century Gothic, sans-serif;
 }
