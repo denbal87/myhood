@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request, make_response
+from flask import Flask, jsonify, render_template, request, make_response, send_file
 import requests
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -155,6 +155,8 @@ def containsPoint(someList, somePoint):
 @app.route('/test')
 def test():
 	return render_template('test.html')
+	#return send_file("static/nh_map.jpg", mimetype='image/gif')
+
 
 @app.route('/')
 def page():
