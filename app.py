@@ -152,12 +152,30 @@ def containsPoint(someList, somePoint):
 	#db.session.delete(entry)
 	#db.session.commit()
 
+@app.route('/')
+def page():
+	return render_template('home.html')
+
+@app.route('/check_key', methods=["GET", "POST"])
+def check_key():
+	if request.method == "POST":
+		key = request.form["key"]
+		if key == "znamensk87":
+			return render_template("my_hood.html")
+		else:
+			return render_template("home.html")
+
+
+@app.route('/my_hood')
+def my_hood():
+	return render_template('my_hood.html')
+
 @app.route('/map')
 def map():
 	return render_template('map.html')
 
-@app.route('/check_key', methods=["GET", "POST"])
-def check_key():
+@app.route('/check_key_not_nyc', methods=["GET", "POST"])
+def check_key_not_nyc():
 	if request.method == "POST":
 		key = request.form["key"]
 		if key == "znamensk87":
@@ -165,10 +183,6 @@ def check_key():
 		else:
 			return render_template("not_in_nyc.html")
 
-
-@app.route('/')
-def page():
-	return render_template('my_hood.html')
 
 # upvote a post
 @app.route('/upvote',  methods=["GET", "POST"])
