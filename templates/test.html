@@ -93,5 +93,11 @@
     $(document).foundation();
     </script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="../static/js/jquery.rwdImageMaps.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('img[usemap]').rwdImageMaps();
+        });
+    </script>
 </body>
 </html>
