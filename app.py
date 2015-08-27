@@ -352,7 +352,7 @@ def load_posts(theHood, tag):
 
 @app.errorhandler(404)
 def nope(error):
-	return "We ain't got what yo looking for, fool!", 404	
+	return render_template("error.html");	
 
 #get neighborhood list from lat and long values
 @app.route('/getgeo')
