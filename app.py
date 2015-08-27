@@ -163,7 +163,7 @@ def check_key():
 		if key == "znamensk87":
 			return render_template("map.html")
 		else:
-			return render_template("simple.html")
+			return render_template("not_in_nyc.html")
 
 
 @app.route('/')
@@ -259,14 +259,14 @@ def home():
 		lat = (request.json["lat"])
 		longit = (request.json["longit"])
 		for hood in hoodList:
-			if containsPoint(hood.tupleList, (61.666686, 100.539063)) > 0:
+			if containsPoint(hood.tupleList, (lat, longit)) > 0:
 				theHood = hood.name
 				return theHood 
 		return "not in nyc"
 
 @app.route('/not_in_nyc')
 def not_in_nyc():
-	return render_template('simple.html')
+	return render_template('not_in_nyc.html')
 
 
 
