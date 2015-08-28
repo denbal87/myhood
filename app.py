@@ -46,6 +46,7 @@ db = SQLAlchemy(app)
 #		self.zipcodes = zips
 
 hoodList = neighborhoods.hoodList
+nycBounds = neighborhoods.nycBounds
 
 # change time to New York loca time
 def localTime():
@@ -275,12 +276,20 @@ def home():
 		for hood in hoodList:
 			if containsPoint(hood.tupleList, (lat, longit)) > 0:
 				theHood = hood.name
-				return theHood 
-		return "not in nyc"
+				return theHood
+		if containsPoint(nycBounds.tupleList, (lat, longit)) > 0:		 
+			return "in nyc"
+		else:
+			return "not in nyc"
+
 
 @app.route('/not_in_nyc')
 def not_in_nyc():
 	return render_template('not_in_nyc.html')
+
+@app.route('/in_nyc')
+def in_nyc():
+	return render_template('in_nyc.html')
 
 
 
