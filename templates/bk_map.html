@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+    <script type=text/javascript src="{{
+  url_for('static', filename='jquery.js') }}"></script>
+	<title>Map</title>
+</head>
+<body>
+	<!--button onclick="history.back()">Go back</button-->
+	<br>
+	<div style="white-space: nowrap">
+	<!--img src="/static/1.png" style="display: block; float: up"-->
+	<!--img src="/static/2.png" style="display: block; float: up"-->
+
+    <center><img src="/static/bk_1.png" style="display: block; float: up" width="600" height="902" border="0" usemap="#map1" />
+
+    
+
+    <center><img src="/static/bk_2.png" width="600" height="902" border="0" usemap="#map" style="display: block; float: up" />
+
+
+	</div>
+
+
+	<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+    <script>
+    $(document).foundation();
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="../static/js/jquery.rwdImageMaps.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('img[usemap]').rwdImageMaps();
+        });
+    </script>
+</body>
+</html>

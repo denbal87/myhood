@@ -171,9 +171,9 @@ def check_key():
 def my_hood():
 	return render_template('my_hood.html')
 
-@app.route('/map')
-def map():
-	return render_template('map.html')
+@app.route('/map/<neighborhood>')
+def map(neighborhood):
+	return render_template('map.html', nh = neighborhood)
 	#return send_file('static/nh_map_small.jpg', mimetype='image/gif')
 
 @app.route('/check_key_not_nyc', methods=["GET", "POST"])
