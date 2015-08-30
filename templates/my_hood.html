@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
-    <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-    <script type=text/javascript src="{{
-  url_for('static', filename='jquery.js') }}"></script>
-    
-    <script>
-      window.setTimeout(getLocation, 5000)
-      function getLocation(){
+    <script type=text/javascript src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
+    <script type=text/javascript>
+    window.setTimeout(getLocation, 5000);
+
+    function getLocation() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 //var start = 'lat=';
@@ -32,19 +31,19 @@
                     contentType: 'application/json;charset=UTF-8',
                     type: 'POST',
                     success: function(response) {
-                      if(response != "not in nyc" && response != "in nyc")
-                        window.location.replace('/load_posts/' + response + '/whats_good');
-                      else if(response == "in nyc")
-                        window.location.replace('/in_nyc')
-                      else
-                        window.location.replace('/not_in_nyc');
+                        if (response != "not in nyc" && response != "in nyc")
+                            window.location.replace('/load_posts/' + response + '/whats_good');
+                        else if (response == "in nyc")
+                            window.location.replace('/in_nyc')
+                        else
+                            window.location.replace('/not_in_nyc');
                     },
                     error: function(error) {
                         alert("Error Determining Neighborhood");
                     }
                 });
             });
-      }  
+    }
     </script>
 </head>
 

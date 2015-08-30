@@ -174,6 +174,7 @@ def my_hood():
 @app.route('/map')
 def map():
 	return render_template('map.html')
+	#return send_file('static/nh_map_small.jpg', mimetype='image/gif')
 
 @app.route('/check_key_not_nyc', methods=["GET", "POST"])
 def check_key_not_nyc():
