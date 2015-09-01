@@ -13,11 +13,16 @@
     <script type=text/javascript src="{{ url_for('static', filename='js/app.js') }}"></script>
     <script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
     <script type=text/javascript>
+    if (navigator.geolocation) {
+        alert('Geolocation is supported!');
+    }
+    else {
+        alert('Geolocation is not supported for this Browser/OS version yet.');
+    }
 
-    window.setTimeout(getLocation, 3000);
+    //window.setTimeout(getLocation, 5000);
 
-    //window.onload = 
-    function getLocation() {
+    window.onload = function() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 //var start = 'lat=';
