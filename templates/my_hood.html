@@ -13,8 +13,10 @@
     <script type=text/javascript src="{{ url_for('static', filename='js/app.js') }}"></script>
     <script type=text/javascript src="{{url_for('static', filename='jquery.js') }}"></script>
     <script type=text/javascript>
-    window.setTimeout(getLocation, 5000);
 
+    window.setTimeout(getLocation, 3000);
+
+    //window.onload = 
     function getLocation() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
@@ -24,9 +26,10 @@
                     'lat': position.coords.latitude,
                     'longit': position.coords.longitude
                 };
-
+    
+    
                 $.ajax({
-                    url: "home",
+                    url: "/home",
                     data: JSON.stringify(result, null, '\t'),
                     contentType: 'application/json;charset=UTF-8',
                     type: 'POST',
@@ -43,7 +46,7 @@
                     }
                 });
             });
-    }
+    };
     </script>
 </head>
 
