@@ -153,6 +153,36 @@ def containsPoint(someList, somePoint):
 	#db.session.delete(entry)
 	#db.session.commit()
 
+@app.route('/scroller')
+def scroller():
+	return render_template('scroll.html')
+
+@app.route("/test", methods=["GET", "POST"])
+def test():
+	if request.method =="POST":
+		categ = request.json["categ"]
+		nh = request.json["nh"]
+		#fullName = name + " " + ln
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+		subcat = "None")
+		#return fullName
+
+		nh = theHood
+	categ = tag
+	if categ == "whats_good":
+		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+		subcat = "None")
+	elif categ == "help_me_find":
+		return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
+		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
+		subcat = "None")
+
+
+
+
+
 @app.route('/')
 def page():
 	return render_template('home.html')
