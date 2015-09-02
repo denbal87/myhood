@@ -155,7 +155,7 @@ def containsPoint(someList, somePoint):
 
 @app.route('/scroller')
 def scroller():
-	return render_template('scroll.html')
+	return render_template('iscroll.html')
 
 @app.route("/test", methods=["GET", "POST"])
 def test():
