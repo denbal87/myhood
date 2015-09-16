@@ -130,7 +130,7 @@ def test():
 
 @app.route('/')
 def page():
-	return render_template('home.html')
+	return render_template('my_hood.html')
 
 @app.route('/check_key', methods=["GET", "POST"])
 def check_key():
