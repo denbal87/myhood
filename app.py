@@ -18,33 +18,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myhood.db'
 
 db = SQLAlchemy(app)
 
-#zipcodes = [ Hood("Inwood", ["10034"]), 
-#		Hood("Morningside Heights", ["10027", "10015"]),
-#		Hood("East Harlem", ["10035", "10029"]),
-#		Hood("Upper West Side", ["10024", "10025"]),
-#		Hood("Upper West Side", ["10024", "10025"]),
-#		Hood("Lincoln Square" : ["10023", "10069"]),
-#		Hood("Upper East Side", ["10028", "10162", "10044", "10075", "10128"]),
-#		Hood("Lennox Hill", ["10065", "10021"]),
-#		Hood("Hell's Kitchen", ["10018", "10036", "10019"]),
-#		Hood("Midtown", ["10019", "10022", "10017", "10016"]),
-#		Hood("Chelsea", ["10001", "10011"]),
-#		Hood("West Village", ["10014"]),
-#		Hood("East Village", ["10009"]),
-#		Hood("Little Italy", ["10013"]),
-#		Hood("Chinatown", ["10013"]), 
-#		Hood("Tribeca", ["10013"]),
-#		Hood("Lower East Side", ["10002", "10003"]),
-#		Hood("Soho", ["10012"]),
-#		Hood("Wall Street", ["10038"]),
-#		Hood("Southern Tip", ["10004"]) ]
-
-# to use with zipcodes
-#class Hood:
-#	def __init__(self, name, zips):
-#		self.name = name
-#		self.zipcodes = zips
-
 hoodList = neighborhoods.hoodList
 nycBounds = neighborhoods.nycBounds
 
@@ -61,8 +34,9 @@ def localTime():
 	utc = utc.replace(tzinfo=from_zone)
 
 	# Convert time zone
-	central = utc.astimezone(to_zone).strftime('posted on %b %d at %-I:%M%p')
+	central = utc.astimezone(to_zone).strftime('posted on %b %d %Y at %-I:%M%p')
 	return central
+
 
 
 
@@ -130,29 +104,6 @@ def containsPoint(someList, somePoint):
 		return 1
 
 
-
-#method for determining neighborhood based on zipcode
-#returns a tuple containing the neighborhood/s	
-#def get_nh(zipcode, lat, longitude):	
-#	
-#	for neighborhood in zipcodes:
-#		if zipcode in neighborhood.zipcodes:
-#			
-#			if neighborhood.name == "Morningside Heights" || neighborhood.name == "Harlem":
-#				if longitude < -73.957534:
-#					return "Morningside Heights"
-#				elif:
-#					return "Harlem"
-#			
-#			if neighborhood.name == ""		 
-#			
-#			return element	
-
-#uncoment to delete entries in database
-#for entry in db.session.query(Post).order_by(Post.id):
-	#db.session.delete(entry)
-	#db.session.commit()
-
 @app.route('/scroller')
 def scroller():
 	return render_template('iscroll.html')
@@ -160,13 +111,7 @@ def scroller():
 @app.route("/test", methods=["GET", "POST"])
 def test():
 	if request.method =="POST":
-		categ = request.json["categ"]
-		nh = request.json["nh"]
-		#fullName = name + " " + ln
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-		subcat = "None")
-		#return fullName
+		return "nothing"
 
 		nh = theHood
 	categ = tag
@@ -326,21 +271,24 @@ def in_nyc():
 
 @app.route('/whats_good/<theHood>/<subcateg>')
 def whats_good(theHood, subcateg):
+	theDate = localTime()
 	aList = [1,2,3]
 	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", 
-		subcat = subcateg, aList = aList)
+		subcat = subcateg, aList = aList, date = theDate)
 
 @app.route('/help_me_find/<theHood>/<subcateg>')
 def help_me_find(theHood, subcateg):
+	theDate = localTime()
 	return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "help_me_find",
-		subcat = subcateg)		
+		subcat = subcateg, date = theDate)		
 
 
 @app.route('/answer/<postID>/<nh>/<tag>/<subcateg>', methods=["GET", "POST"])
 def answer(postID, nh, tag, subcateg):
 	if request.method == "POST":
+		theDate = localTime()
 		subcategory = "None"
 		anAnswer = request.form["user_input"]
 		#search database for post with given postID
@@ -358,12 +306,12 @@ def answer(postID, nh, tag, subcateg):
 			#return the template with posts and answers for given nh
 			return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, 
-			theTag = tag, subcat = subcategory)
+			theTag = tag, subcat = subcategory, date = theDate)
 		elif tag == "help_me_find":
 			#return the template with posts and answers for given nh
 			return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, post_copy = thePost, 
-			theTag = tag, subcat = subcategory)	
+			theTag = tag, subcat = subcategory, date = theDate)	
 	else:
 		return render_template("search.html")
 		
@@ -380,6 +328,7 @@ def search():
 @app.route("/post", methods=["GET", "POST"])
 def post():
 	if request.method =="POST":
+		theDate = localTime()
 		nh = request.json["theHood"]
 		categ = request.json["category"]
 		user_text = request.json["text"]
@@ -393,24 +342,25 @@ def post():
 		if categ == "whats_good":
 			return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-			subcat = "None")
+			subcat = "None", date = theDate)
 		elif categ == "help_me_find":
 			return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 			answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-			subcat = "None")
+			subcat = "None", date = theDate)
 
 @app.route("/load_posts/<theHood>/<tag>")
 def load_posts(theHood, tag):
+	theDate = localTime()
 	nh = theHood
 	categ = tag
 	if categ == "whats_good":
 		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-		subcat = "None")
+		subcat = "None", date = theDate)
 	elif categ == "help_me_find":
 		return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-		subcat = "None")
+		subcat = "None", date = theDate)
 
 @app.errorhandler(404)
 def nope(error):

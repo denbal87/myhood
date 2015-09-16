@@ -13,7 +13,16 @@
 	Have generic map so can click on a nh and it will show on map
 	
 	
-8/12/15 to do:
+9/16/15 to do:
+
+* add button for "specific date" and "this week"
+
+* add search button
+
+* automatically select a tag when select to show posts
+under a specific tag so you can post a question with 
+the tag already selected. 
+
 
 * make only the first n answers appear
 
@@ -29,5 +38,6 @@
 
 * Change front page: 
 	- add "locating your hood" message--how??
-	-add something like "explore the neighborhoods"
+
+
 

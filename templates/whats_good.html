@@ -2,6 +2,9 @@
 <!-- whats_good.html -->
 {% block title %}My Hood {% endblock %} 
 {% block body %} 
+<!--for substring of a post's date-->
+{% set start = 9 %}
+{% set end = 21 %}
 
 <div id="wgt_body">
 <h1 class="section_headline">What's Good in {{ hood }} tonight? </h1> 
@@ -36,7 +39,7 @@
 <ul id="postList">
     {% set i = 0 %} 
     {% for post in s: %} 
-    {% if post.nh == hood and post.tag == theTag %}
+    {% if post.nh == hood and post.tag == theTag and post.date[start:end] == date[start:end] %}
     {% if subcat == "None" %}
     <!--______________________________ -->
     <li>

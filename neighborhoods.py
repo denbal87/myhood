@@ -166,12 +166,16 @@ hoodList = [ Hood('Harlem',
 		 ((40.731237, -73.990216), (40.723952, -73.992491)), ((40.731806, -73.991547), (40.731188, -73.990130))
 		])
 
-
+	# add more neighborhoods
 	#Hood("", 
 	#	[ ((), ()), ((), ()), ((), ()), ((), ())
 	#	])
 	
 	]
+
+# relative bounds of the city of New York in case
+# it is needed to determine whether the user is roughly 
+# within the bounds of one of the NYC boroughs. 
 nycBounds = Hood("NYC Bounds", 
 		[ ((40.680926, -74.071691), (40.935589, -73.918570)), ((40.513043, -74.015387), (40.680926, -74.071691)),
 		 ((40.462910, -73.685797), (40.504690, -74.100531)), ((40.903420, -73.678930), (40.482759, -73.740728)),
