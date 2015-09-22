@@ -15,13 +15,12 @@
 	
 9/16/15 to do:
 
-* add button for "specific date" and "this week"
-
-* add search button
 
 * automatically select a tag when select to show posts
-under a specific tag so you can post a question with 
-the tag already selected. 
+	under a specific tag so you can post a question with 
+	the tag already selected. 
+
+* add answers to posts in search results + let users answer those posts? (have to get post id--might be hard?)
 
 
 * make only the first n answers appear
