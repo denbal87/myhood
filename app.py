@@ -40,7 +40,7 @@ def localtime():
 		'postMonth' : central.month,
 		'postYear' : central.year}
 
-# returns a list with the past 7 days including today
+# returns a list with the past 7 dates including today
 def thisWeek():
 	postDict = localtime()
 	day = int(postDict['postDay'])
@@ -73,36 +73,69 @@ def thisWeek():
 	return dateList	
 
 # returns a list of posts from this week in a given category
-@app.route('/this_week/<categ>/<subcateg>/<hood>')
-def this_week(categ, subcateg, hood):
-	thisWeekList = []
-	dateDict = localtime()
-	thisMonth = int(dateDict['postMonth'])
-	
-	if subcateg != 'None':
-		# if month is January, prev month is December
-		if thisMonth == 1:
-			posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.nh == hood,
-				Post.tag == categ, Post.subcat == subcateg)
+@app.route('/search/<categ>/<subcateg>/<hood>', methods=["GET", "POST"])
+def search(categ, subcateg, hood,):
+	if request.method == "POST":
+		keyWord = request.form["user_input"]
+		day = request.form['day']
+		month = request.form['month']
+		year = request.form['year']		
+		postList = []
+		dateDict = localtime()
+		thisMonth = int(dateDict['postMonth'])
+		thisYear = int(dateDict['postYear'])
+		
+		# if date and month and year are selected
+		if day != '-' and month != '-' and year != '-':
+			day = int(request.form['day'])
+			month = int(request.form['month'])
+			year = int(request.form['year'])
+			# if keyword is given
+			if keyWord != '':
+				posts = db.session.query(Post).filter(Post.month == month, Post.day == day, Post.year == year, Post.nh == hood, Post.tag == categ, 
+					Post.subcat == subcateg)
+				for post in posts:
+					if keyWord in post.text:
+						postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+			# keyword is not provided--just show all posts from that day
+			else:
+				posts = db.session.query(Post).filter(Post.month == month, Post.day == day, Post.year == year, Post.nh == hood, Post.tag == categ, 
+					Post.subcat == subcateg)
+				for post in posts:
+					postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+
+		# date is not selected--show posts from past week			
 		else:
-			posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth),
-				Post.nh == hood, Post.tag == categ, Post.subcat == subcateg)
-	else:
-	# if month is January, prev month is December
-		if thisMonth == 1:
-			posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.nh == hood,
-				Post.tag == categ) 
-		else:
-			posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth),
-				Post.nh == hood, Post.tag == categ)
+
+			if subcateg != 'None':
+				# if month is January, prev month is December
+				if thisMonth == 1:
+					posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.year == thisYear, Post.nh == hood,
+						Post.tag == categ, Post.subcat == subcateg)
+				else:
+					posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth), Post.year == thisYear,
+						Post.nh == hood, Post.tag == categ, Post.subcat == subcateg)
+			else:
+				# if month is January, prev month is December
+				if thisMonth == 1:
+					posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.year == thisYear, Post.nh == hood,
+						Post.tag == categ) 
+				else:
+					posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth), Post.year == thisYear,
+						Post.nh == hood, Post.tag == categ)
 
 	
-	weekList = thisWeek()
-	for date in weekList:
-		for post in posts:
-			if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']):
-				thisWeekList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
-	return render_template('search_results.html', s = thisWeekList, hood = hood)
+			weekList = thisWeek()
+			for date in weekList:
+				for post in posts:
+					if keyWord != '':
+						if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']) and keyWord in post.text:
+							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+					else:
+						if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']):
+							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})	
+		
+		return render_template('search_results.html', s = postList, hood = hood)
 
 
 
@@ -132,7 +165,6 @@ class Answer(db.Model):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String)
-    #date = db.Column(db.DateTime)
     date = db.Column(db.String)
     nh = db.Column(db.String)
     tag = db.Column(db.String) # this is the category the post is under
@@ -147,8 +179,8 @@ class Post(db.Model):
         dateDict = localtime()
         self.text = text
         self.nh = hood
-        self.date = 'posted on Sep 14 2015 at 1:04PM'
-        #self.date = dateDict['postDate']
+        #self.date = 'posted on Sep 19 2015 at 1:04PM'
+        self.date = dateDict['postDate']
         self.day = dateDict['postDate']
         self.month = dateDict['postMonth']
         self.year = dateDict['postYear']
@@ -189,11 +221,11 @@ def make_posts():
 		theDate = dateDict['postDate']
 		nh = "Morningside Heights"
 		categ = "whats_good"
-		user_text = "sample post sep 14"
+		user_text = "bummer!"
 		subcateg = 'bars'
 		post = Post(user_text, nh, categ)
 		post.subcat = subcateg
-		post.day = 14
+		post.day = 19
 		post.month = 9
 		post.year = 2015
 		db.session.add(post)
@@ -389,15 +421,7 @@ def answer(postID, nh, tag, subcateg):
 			theTag = tag, subcat = subcategory, date = theDate)	
 	else:
 		return render_template("search.html")
-		
-@app.route("/search", methods=["GET", "POST"])
-def search():
-    if request.method == "POST":
-        url = "https://api.github.com/search/repositories?q=" + request.form["user_search"]
-        response_dict = requests.get(url).json()
-        return render_template('results.html', api_data=response_dict)
-    else: # request.method == "GET"
-        return render_template("search.html")
+
 		
 
 @app.route("/post", methods=["GET", "POST"])
