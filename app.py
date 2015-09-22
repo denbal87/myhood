@@ -135,7 +135,7 @@ def search(categ, subcateg, hood,):
 						if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']):
 							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})	
 		
-		return render_template('search_results.html', s = postList, hood = hood)
+		return render_template('search_results.html', s = postList, hood = hood, theTag = categ, subcat = subcateg)
 
 
 
