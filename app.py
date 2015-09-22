@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, render_template, request, make_response, send_file
 import requests
-from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 import uuid
@@ -22,7 +21,7 @@ hoodList = neighborhoods.hoodList
 nycBounds = neighborhoods.nycBounds
 
 # change time to New York loca time
-def localTime():
+def localtime():
 	from_zone = tz.gettz('UTC')
 	to_zone = tz.gettz('America/New_York')
 
@@ -34,9 +33,76 @@ def localTime():
 	utc = utc.replace(tzinfo=from_zone)
 
 	# Convert time zone
-	central = utc.astimezone(to_zone).strftime('posted on %b %d %Y at %-I:%M%p')
-	return central
+	central = utc.astimezone(to_zone)
+	dateAsString = utc.astimezone(to_zone).strftime('posted on %b %d %Y at %-I:%M%p')
+	return {'postDate' : dateAsString,
+		'postDay' : central.day,
+		'postMonth' : central.month,
+		'postYear' : central.year}
 
+# returns a list with the past 7 days including today
+def thisWeek():
+	postDict = localtime()
+	day = int(postDict['postDay'])
+	month = int(postDict['postMonth'])
+	year = int(postDict['postYear'])
+	dateList = [{'day' : day, 'month' : month, 'year' : year}]
+	if year % 4 == 0 or (year % 100 == 0 and year % 400 == 0):
+		leap = True
+	else:
+		leap = False
+	prevday = day
+
+	for n in range(0,7):
+		prevday = prevday - 1
+		if prevday >= 1:
+			dateList.append({'day' : prevday, 'month' : month, 'year' : year})
+		elif prevday - 1 < 1 and month != 2:
+			if (month < 8 and month % 2 != 0) or (month > 7 and month % 2 == 0):
+				prevday = 31
+			else:
+				prevday = 30		
+			dateList.append({'day' : prevday, 'month' : month, 'year' : year})	
+		elif prevday - 1 < 1 and month == 2:
+			if leap:
+				prevday = 29
+				dateList.append({'day' : prevday, 'month' : month, 'year' : year})
+			else:
+				prevday = 28
+				dateList.append({'day' : prevday, 'month' : month, 'year' : year})	
+	return dateList	
+
+# returns a list of posts from this week in a given category
+@app.route('/this_week/<categ>/<subcateg>/<hood>')
+def this_week(categ, subcateg, hood):
+	thisWeekList = []
+	dateDict = localtime()
+	thisMonth = int(dateDict['postMonth'])
+	
+	if subcateg != 'None':
+		# if month is January, prev month is December
+		if thisMonth == 1:
+			posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.nh == hood,
+				Post.tag == categ, Post.subcat == subcateg)
+		else:
+			posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth),
+				Post.nh == hood, Post.tag == categ, Post.subcat == subcateg)
+	else:
+	# if month is January, prev month is December
+		if thisMonth == 1:
+			posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.nh == hood,
+				Post.tag == categ) 
+		else:
+			posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth),
+				Post.nh == hood, Post.tag == categ)
+
+	
+	weekList = thisWeek()
+	for date in weekList:
+		for post in posts:
+			if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']):
+				thisWeekList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+	return render_template('search_results.html', s = thisWeekList, hood = hood)
 
 
 
@@ -71,13 +137,21 @@ class Post(db.Model):
     nh = db.Column(db.String)
     tag = db.Column(db.String) # this is the category the post is under
     subcat = db.Column(db.String, default = "None") # this is the tag or subcategory that
+    day  = db.Column(db.Integer)
+    month = db.Column(db.Integer)
+    year = db.Column(db.Integer)
     # users can choose
     
 
     def __init__(self, text, hood, aTag):
+        dateDict = localtime()
         self.text = text
         self.nh = hood
-        self.date = localTime()#datetime.now().strftime('posted on %b %d at %-I:%-M')
+        self.date = 'posted on Sep 14 2015 at 1:04PM'
+        #self.date = dateDict['postDate']
+        self.day = dateDict['postDate']
+        self.month = dateDict['postMonth']
+        self.year = dateDict['postYear']
         self.tag = aTag
 
 db.create_all()
@@ -108,25 +182,23 @@ def containsPoint(someList, somePoint):
 def scroller():
 	return render_template('iscroll.html')
 
-@app.route("/test", methods=["GET", "POST"])
-def test():
-	if request.method =="POST":
-		return "nothing"
-
-		nh = theHood
-	categ = tag
-	if categ == "whats_good":
-		return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-		subcat = "None")
-	elif categ == "help_me_find":
-		return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
-		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = nh, theTag = categ, 
-		subcat = "None")
-
-
-
-
+@app.route('/make_posts')
+def make_posts():
+	for a in range(0, 10):
+		dateDict = localtime()
+		theDate = dateDict['postDate']
+		nh = "Morningside Heights"
+		categ = "whats_good"
+		user_text = "sample post sep 14"
+		subcateg = 'bars'
+		post = Post(user_text, nh, categ)
+		post.subcat = subcateg
+		post.day = 14
+		post.month = 9
+		post.year = 2015
+		db.session.add(post)
+		db.session.commit()	
+	return "Posts have been posted!"	
 
 @app.route('/')
 def page():
@@ -271,7 +343,8 @@ def in_nyc():
 
 @app.route('/whats_good/<theHood>/<subcateg>')
 def whats_good(theHood, subcateg):
-	theDate = localTime()
+	dateDict = localtime()
+	theDate = dateDict['postDate']
 	aList = [1,2,3]
 	return render_template('whats_good.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "whats_good", 
@@ -279,7 +352,8 @@ def whats_good(theHood, subcateg):
 
 @app.route('/help_me_find/<theHood>/<subcateg>')
 def help_me_find(theHood, subcateg):
-	theDate = localTime()
+	dateDict = localtime()
+	theDate = dateDict['postDate']
 	return render_template('help_me_find.html', s = (db.session.query(Post).order_by(Post.id.desc())), 
 		answers = db.session.query(Answer).order_by(Answer.score.desc()), hood = theHood, theTag = "help_me_find",
 		subcat = subcateg, date = theDate)		
@@ -288,7 +362,8 @@ def help_me_find(theHood, subcateg):
 @app.route('/answer/<postID>/<nh>/<tag>/<subcateg>', methods=["GET", "POST"])
 def answer(postID, nh, tag, subcateg):
 	if request.method == "POST":
-		theDate = localTime()
+		dateDict = localtime()
+		theDate = dateDict['postDate']
 		subcategory = "None"
 		anAnswer = request.form["user_input"]
 		#search database for post with given postID
@@ -328,7 +403,8 @@ def search():
 @app.route("/post", methods=["GET", "POST"])
 def post():
 	if request.method =="POST":
-		theDate = localTime()
+		dateDict = localtime()
+		theDate = dateDict['postDate']
 		nh = request.json["theHood"]
 		categ = request.json["category"]
 		user_text = request.json["text"]
@@ -350,7 +426,8 @@ def post():
 
 @app.route("/load_posts/<theHood>/<tag>")
 def load_posts(theHood, tag):
-	theDate = localTime()
+	dateDict = localtime()
+	theDate = dateDict['postDate']
 	nh = theHood
 	categ = tag
 	if categ == "whats_good":

@@ -28,20 +28,21 @@
         <button id="submit_post">Post</button>
     </div>
     <!-- /form -->
-    </div>
+</div>
     <br>
     <br>
+
+
 
 {% if subcat != "None" %}
 <h3> {{ subcat}} </h3>
 {% endif %}
-
 <ul id="postList">
     {% set i = 0 %} 
     {% for post in s: %} 
     {% if post.nh == hood and post.tag == theTag and post.date[start:end] == date[start:end] %}
     {% if subcat == "None" %}
-    <!--______________________________ -->
+
     <li>
         <hr class="post_line">
         <td> <h5>{{ post.text }}</h5> </td>
