@@ -92,29 +92,28 @@ def search(categ, subcateg, hood,):
 			year = int(request.form['year'])
 			# if keyword is given
 			if keyWord != '':
-				posts = db.session.query(Post).filter(Post.month == month, Post.day == day, Post.year == year, Post.nh == hood, Post.tag == categ, 
-					Post.subcat == subcateg)
+				posts = db.session.query(Post).filter(Post.month == month, Post.day == day, Post.year == year, Post.nh == hood, Post.tag == categ)
 				for post in posts:
-					if keyWord in post.text:
-						postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+					if keyWord in post.text or keyWord in post.subcat:
+						postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat, 'id' : post.id, 'tag' : post.tag})
 			# keyword is not provided--just show all posts from that day
 			else:
-				posts = db.session.query(Post).filter(Post.month == month, Post.day == day, Post.year == year, Post.nh == hood, Post.tag == categ, 
-					Post.subcat == subcateg)
+				posts = db.session.query(Post).filter(Post.month == month, Post.day == day, Post.year == year, Post.nh == hood, Post.tag == categ)
 				for post in posts:
-					postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+					postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat, 'id' : post.id, 'tag' : post.tag})
 
-		# date is not selected--show posts from past week			
+		# date is not selected--show posts from past week
+		# filter database for posts from only two past months			
 		else:
 
 			if subcateg != 'None':
 				# if month is January, prev month is December
 				if thisMonth == 1:
 					posts = db.session.query(Post).filter((Post.month == 12 or Post.month == thisMonth), Post.year == thisYear, Post.nh == hood,
-						Post.tag == categ, Post.subcat == subcateg)
+						Post.tag == categ)
 				else:
 					posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth), Post.year == thisYear,
-						Post.nh == hood, Post.tag == categ, Post.subcat == subcateg)
+						Post.nh == hood, Post.tag == categ)
 			else:
 				# if month is January, prev month is December
 				if thisMonth == 1:
@@ -124,18 +123,20 @@ def search(categ, subcateg, hood,):
 					posts = db.session.query(Post).filter((Post.month == thisMonth - 1 or Post.month == thisMonth), Post.year == thisYear,
 						Post.nh == hood, Post.tag == categ)
 
-	
+			# put posts that match search criteria in postList
 			weekList = thisWeek()
 			for date in weekList:
 				for post in posts:
 					if keyWord != '':
-						if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']) and keyWord in post.text:
-							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})
+						if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']) and (keyWord in post.text
+							or keyWord in post.subcat):
+							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat, 'id' : post.id, 'tag' : post.tag})
 					else:
 						if post.day == int(date['day']) and post.month == int(date['month']) and post.year == int(date['year']):
-							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat})	
+							postList.append({'text' : post.text, 'date' : post.date, 'subcat' : post.subcat, 'id' : post.id, 'tag' : post.tag})	
 		
-		return render_template('search_results.html', s = postList, hood = hood, theTag = categ, subcat = subcateg)
+		return render_template('search_results.html', s = postList, answers = db.session.query(Answer).order_by(Answer.score.desc()), 
+			hood = hood, theTag = categ, subcat = subcateg)
 
 
 
@@ -172,14 +173,14 @@ class Post(db.Model):
     day  = db.Column(db.Integer)
     month = db.Column(db.Integer)
     year = db.Column(db.Integer)
-    # users can choose
     
 
     def __init__(self, text, hood, aTag):
         dateDict = localtime()
         self.text = text
         self.nh = hood
-        #self.date = 'posted on Sep 19 2015 at 1:04PM'
+        #uncomment to write custom date for testing
+        #self.date = 'posted on Sep 20 2015 at 1:04PM'
         self.date = dateDict['postDate']
         self.day = dateDict['postDate']
         self.month = dateDict['postMonth']
@@ -221,11 +222,11 @@ def make_posts():
 		theDate = dateDict['postDate']
 		nh = "Morningside Heights"
 		categ = "whats_good"
-		user_text = "bummer!"
-		subcateg = 'bars'
+		user_text = "what the heck?"
+		subcateg = 'events'
 		post = Post(user_text, nh, categ)
 		post.subcat = subcateg
-		post.day = 19
+		post.day = 20
 		post.month = 9
 		post.year = 2015
 		db.session.add(post)
