@@ -90,17 +90,19 @@
 
                         <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
                           <form action="/search/{{ theTag }}/{{ subcat }}/{{ hood }}" method="post">
-                          <h3 style="color: #3897D4">Search</h3>
+                          <h3 style="color: #3897D4; text-indent: 20px">Search</h3>
                           <br>
-                          <ul class="inline-list">
-                                <li>
-                                    <input style="width: 200px"type="text" name="user_input" placeholder="enter keyword"/>
-                                </li>
-                                <li><button class="small button" type="submit">This Week</button></li>
-                          </ul>
                           
-                          <p style="color: #3897D4">On specific date</p>
+                          <input style="width: 200px; margin-left: 20px"type="text" name="user_input" placeholder="enter keyword (optional)"/>
+                          <br>
+                            <ul class="inline-list" style="padding: 0; list-style: none; text-align:left">
+                                <li><p style="color: #3897D4;">posted this week</p></li>
+
+                                <li><button class="small button" type="submit" style="height: 37px">Search</button></li>
+                            </ul>    
                           
+                          <p style="color: #3897D4; text-indent: 20px">on specific date</p>
+
                           <ul class="inline-list">
                                 
                                 <!-- Month dropdown-->
@@ -166,7 +168,7 @@
                                 <option value="2020">2020</option>
                                 </select></li>
 
-                                <li ><button type="submit" class="small button" style="height: 37px">Go</button></li>
+                                <li ><button type="submit" class="small button" style="height: 37px">Search</button></li>
 
                         <ul/>
                         </form>
