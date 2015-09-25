@@ -5,9 +5,10 @@
 }
 
 #base{
-	overflow: auto; 
+	/*overflow: auto; 
 	background: url("../background-7.jpg") no-repeat center center fixed;
-	background-size:   cover;
+	background-size:   cover;*/
+	background-color: #86C6DE;
     
 }
 
@@ -157,10 +158,12 @@ textarea.noscrollbars {
 /* tags */
 .tag, .tag_help, .tag_prompt, h5, h10{
 	color: white;
+	cursor: pointer; 
+	cursor: hand;
 }
 
 .tagColor{
-	color: #43B2E6;
+	color: #0487B9;
 }
 
 ul{

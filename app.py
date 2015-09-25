@@ -182,7 +182,7 @@ class Post(db.Model):
         #uncomment to write custom date for testing
         #self.date = 'posted on Sep 20 2015 at 1:04PM'
         self.date = dateDict['postDate']
-        self.day = dateDict['postDate']
+        self.day = dateDict['postDay']
         self.month = dateDict['postMonth']
         self.year = dateDict['postYear']
         self.tag = aTag

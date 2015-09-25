@@ -6,6 +6,16 @@
 {% set start = 9 %}
 {% set end = 21 %}
 
+
+{% if subcat != "None" %}
+        {% if subcat == "clothes" %}
+        {% set sb = "Clothes" %}
+        {% elif subcat == "food" %}
+        {% set sb = "Food" %}
+        {% else %}
+        {% set sb = "Recreation" %}
+        {% endif %}
+
 <h1 class="section_headline">Help Me Find It in {{ hood }}</h1> 
 
 <div id="answer_box">
@@ -14,15 +24,8 @@
         <textarea id="postText" name="user_input" required placeholder=
         "Compose your question" class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
     </p>
-    <h5>Select a tag</h5>
-    <!-- tag buttons -->
-    <ul class="inline-list">
-      <li><div class="tag_help" id="food">Food</div></li>
-        <li><div class="tag_help" id="clothes">Clothes</div></li>
-        <li><div class="tag_help" id="recreation">Recreation</div></li>
-        <!--li><div class="tag_help" id="events">Events</div></li
-        add more tags of necessary-->
-    </ul>
+
+    <p style="color: white">{{sb}}</p>
 
     <div class="right">
         <button id="submit_post">Post</button>
@@ -32,16 +35,10 @@
     <br>
     <br>
 
-{% if subcat != "None" %}
-<h3> {{ subcat}} </h3>
-{% endif %}
-
 <ul id="postList">
     {% set i = 0 %} 
     {% for post in s: %} 
-    {% if post.nh == hood and post.tag == theTag and post.date[start:end] == date[start:end] %}
-    {% if subcat == "None" %}
-    <!--______________________________ -->
+    {% if post.nh == hood and post.tag == theTag and post.subcat == subcat and post.date[start:end] == date[start:end] %}
     <li>
         <hr class="post_line">
         <td> <h5>{{ post.text }}</h5> </td>
@@ -158,9 +155,77 @@
         {% endfor %}
     </li>
     {% set i = i + 1 %} 
+
+    {% endif %}
+    {% endfor %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //for submitting a question
+            $('#submit_post').click(function() {
+                var theText = $("#postText").val();
+                if(theText === ""){
+                    window.alert("Did you forget to write a question?");
+                    return;
+                }
+                var data = {
+                    'theHood': "{{ hood }}",
+                    'category': '{{ theTag }}',
+                    'subcategory': '{{subcat}}',
+                    'text': theText
+                };
+
+                $.ajax({
+
+                    url: "/post",
+                    data: JSON.stringify(data, null, '\t'),
+                    contentType: 'application/json;charset=UTF-8',
+                    type: 'POST',
+                    success: function(response) {
+                        window.location.replace('/load_posts/{{ hood }}/{{ theTag }}');
+                    },
+                    error: function(error) {
+                        alert("Failed... =/");
+                    }
+                });
+            });
+        });
+    </script>
+    </ul>
+
+    {% else %}
     
-    {% elif post.subcat == subcat %}
-        <!--______________________________ -->
+    <h1 class="section_headline">Help Me Find It in {{ hood }}</h1> 
+
+    <div id="answer_box">
+    <!-- <form action="/post/{{ hood }}/{{ theTag }}" method="post"> -->
+    <p>
+        <textarea id="postText" name="user_input" required placeholder=
+        "Compose your question" class="noscrollbars" onkeyup="autoGrow(this);"></textarea>
+    </p>
+    <h5>Select a tag</h5>
+    <!-- tag buttons -->
+    <ul class="inline-list">
+      <li><div class="tag_help" id="food">Food</div></li>
+        <li><div class="tag_help" id="clothes">Clothes</div></li>
+        <li><div class="tag_help" id="recreation">Recreation</div></li>
+        <!--li><div class="tag_help" id="events">Events</div></li
+        add more tags of necessary-->
+    </ul>
+
+    <div class="right">
+        <button id="submit_post">Post</button>
+    </div>
+    <!-- /form -->
+    </div>
+    <br>
+    <br>
+
+    <ul id="postList">
+    {% set i = 0 %} 
+    {% for post in s: %} 
+    {% if post.nh == hood and post.tag == theTag and post.date[start:end] == date[start:end] %}
+    <!--______________________________ -->
     <li>
         <hr class="post_line">
         <td> <h5>{{ post.text }}</h5> </td>
@@ -276,71 +341,71 @@
     
 
     {% endif %}
-
-    {% endif %} 
     {% endfor %}
-    <hr class="post_line">
-</ul>
-<script type="text/javascript">
-//for tag button onclick
-$(document).ready(function() {
-    var activeTag;
-    var activeColor = 'rgb(67, 178, 230)';
-    var tagCopy = "None";
-    $('.tag_help').click(function(event) {
 
-        $(this).toggleClass("tagColor");
-        // get id of element that triggered the click
-        activeTag = event.target.id;
-        //rgb(134, 132, 132)
-        if($("#"+activeTag).css('color') === activeColor){
-            tagCopy = activeTag;
-            var tagArr = ["#food", "#clothes", "#clubs", "#recreation"];
-            for (var i = 0; i < tagArr.length; i++) {
-                if (tagArr[i] != '#' + activeTag && $(tagArr[i]).css('color') === activeColor)
-                    $(tagArr[i]).toggleClass('tagColor');
-            }
-        }
-        else{
-            tagCopy = "None";
-        }
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //for tag button onclick
+                var activeTag;
+                var activeColor = 'rgb(4, 135, 185)';
+                var tagCopy = "None";
+                $('.tag_help').click(function(event) {
 
-    });
+                    $(this).toggleClass("tagColor");
+                    // get id of element that triggered the click
+                    activeTag = event.target.id;
+                    //rgb(134, 132, 132)
+                    if($("#"+activeTag).css('color') === activeColor){
+                        tagCopy = activeTag;
+                        var tagArr = ["#food", "#clothes", "#clubs", "#recreation"];
+                        for (var i = 0; i < tagArr.length; i++) {
+                            if (tagArr[i] != '#' + activeTag && $(tagArr[i]).css('color') === activeColor)
+                                $(tagArr[i]).toggleClass('tagColor');
+                        }
+                    }
+                    else{
+                        tagCopy = "None";
+                    }
 
-    //for submitting a question
-    $('#submit_post').click(function() {
-        //first check if user didn't select a tag
-        if (tagCopy === "None") {
-            window.alert("You must select a tag!");
-            return;
-        }
-        var theText = $("#postText").val();
-        if(theText === ""){
-            window.alert("Did you forget to write a question?");
-            return;
-        }
-        var data = {
-            'theHood': "{{ hood }}",
-            'category': '{{ theTag }}',
-            'subcategory': tagCopy,
-            'text': theText
-        };
+                });
 
-        $.ajax({
+                //for submitting a question
+                $('#submit_post').click(function() {
+                    //first check if user didn't select a tag
+                    if (tagCopy === "None") {
+                        window.alert("You must select a tag!");
+                        return;
+                    }
+                    var theText = $("#postText").val();
+                    if(theText === ""){
+                        window.alert("Did you forget to write a question?");
+                        return;
+                    }
+                    var data = {
+                        'theHood': "{{ hood }}",
+                        'category': '{{ theTag }}',
+                        'subcategory': tagCopy,
+                        'text': theText
+                    };
 
-            url: "/post",
-            data: JSON.stringify(data, null, '\t'),
-            contentType: 'application/json;charset=UTF-8',
-            type: 'POST',
-            success: function(response) {
-                window.location.replace('/load_posts/{{ hood }}/{{ theTag }}');
-            },
-            error: function(error) {
-                alert("Failed... =/");
-            }
+                    $.ajax({
+
+                        url: "/post",
+                        data: JSON.stringify(data, null, '\t'),
+                        contentType: 'application/json;charset=UTF-8',
+                        type: 'POST',
+                        success: function(response) {
+                            window.location.replace('/load_posts/{{ hood }}/{{ theTag }}');
+                        },
+                        error: function(error) {
+                            alert("Failed... =/");
+                        }
+                    });
+                });
         });
-    });
-});
-</script>
+    </script>
+</ul>
+{% endif %}
+<hr class="post_line">
 
 {% endblock %}
